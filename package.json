@@ -10,6 +10,16 @@
     "mobx": "^3.0.2",
     "serializr": "^1.1.9"
   },
+  "scripts": {
+    "test": "./node_modules/jest-cli/bin/jest.js"
+  },
+  "keywords": [
+    "mobx",
+    "model",
+    "json",
+    "serialize",
+    "deserialize"
+  ],
   "devDependencies": {
     "babel-plugin-transform-class-properties": "^6.22.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
