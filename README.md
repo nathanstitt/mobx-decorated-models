@@ -1,22 +1,25 @@
 # Decorators for creating model type structures with mobx
 
-mobx-decorated-models is a collection of es7 decorators that help decorate a
-class to make it easily observable and serializable.
+mobx-decorated-models is a collection of es7 decorators to make a class observable and serializable.
 
 [![Build Status](https://travis-ci.org/nathanstitt/mobx-decorated-models.svg?branch=master)](https://travis-ci.org/nathanstitt/mobx-decorated-models)
 
 ## Introduction
 
-[Mobx](https://mobx.js.org) makes state management super simple, but it doesn't have any
+[Mobx](https://mobx.js.org) makes state management super simple, but it doesn't offer an
 opinion on how to get data in and out of the observed data structures.
 
 [Serializr](https://github.com/mobxjs/serializr) takes care of that nicely.
 
-Combining the two libraries isn't difficult, but it mean you end up specifing each attribute twice,
-once so Mobx will observe it and once to create a schema for Serializr.
+Combining the two libraries isn’t difficult, but then you end up specifing each attribute twice;
+once so Mobx will observe it, and once to create a schema for Serializr.
 
-This library is a collection of decorators that will make co-ordinate making
+This library is a collection of decorators that co-ordinates making
 fields both observable and serializable.
+
+While it’s at it, it also handles model lookups so different models can refer
+to one another regardless of import order. When one model refers to another, a
+reference of the requirement is stored and then later resolved when the class becomes known.
 
 ## Example
 
@@ -48,9 +51,9 @@ fetch('/my/api/endpoints/boxes/1.json').then(function(response) {
   boxes.concat(Box.deserialize(response.json()));
 });
 
-box = new Box();
-box.update({ width: 2, height: 3, depth: 8 });
-box.volume(); // => 48
+const box = Box.deserialize({ id: 1, width: 2, height: 3, depth: 8 }); // returns an instance of Box
+console.log(box.volume);      // => 48
+console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, items: [] }
 ```
 
 ### Decorators
@@ -102,4 +105,4 @@ As in `belongsTo`, can be optionally given an option object with a `className` p
 # Future plans
 
  * Use a provided lookup function to control the lookup
- * Sessions properties that will be set from JSON but won't be serialized
+ * Sessions properties that will be set from JSON but won't be serialized.
