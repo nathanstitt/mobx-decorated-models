@@ -36,20 +36,11 @@ describe('Class Decorators', () => {
 
     it('works with belongsTo', () => {
         const box = new Box();
-        const container = Container.deserialize({ id: 1, name: '#12', location: 'Building #1' });
-
-        expect(box.constructor).toEqual(Box);
-
-        box.update({ id: 2, width: 3, depth: 12, height: 4 });
-        box.container = container;
-
-        expect(box.container).toEqual(container);
-
+        const container = { id: 1, name: '#12', location: 'Building #1' };
+        box.update({ id: 32, width: 3, depth: 12, height: 4, container });
         expect(box.serialize()).toEqual({
-            id: 2, width: 3, depth: 12, height: 4,
-            container: {
-                id: 1, name: '#12', location: 'Building #1', boxes: [],
-            },
+            id: 32, width: 3, depth: 12, height: 4,
+            container: Object.assign({}, container, { boxes: [] }),
         });
     });
 
