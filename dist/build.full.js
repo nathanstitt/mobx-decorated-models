@@ -206,7 +206,7 @@ var toConsumableArray = function (arr) {
 function addAttribute(type, target, property, descriptor) {
     var options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
 
-    getModelSchema(target.constructor).set(property, { type: type, options: options });
+    getModelSchema(target.constructor).set(property, { name: property, type: type, options: options });
     return mobx.observable(target, property, descriptor);
 }
 
