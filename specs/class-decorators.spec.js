@@ -1,7 +1,6 @@
 import { Container, Box } from './test-models';
 
 describe('Class Decorators', () => {
-
     it('adds static deserialize method and serialize to prototype', () => {
         const attrs = { id: 42, name: 'TV1', location: 'mid-ship', tags: [], boxes: [
             { id: 1, width: 8, depth: 12, height: 8 },
@@ -11,7 +10,7 @@ describe('Class Decorators', () => {
         expect(container.serialize()).toEqual({
             id: 42, location: 'mid-ship', name: 'TV1', tags: [],
             boxes: [
-                { container: undefined, depth: 12, height: 8, id: 1, metadata: {}, width: 8},
+                { container: undefined, depth: 12, height: 8, id: 1, metadata: {}, width: 8 },
             ],
         });
     });

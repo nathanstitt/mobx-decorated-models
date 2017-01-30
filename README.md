@@ -56,19 +56,82 @@ console.log(box.volume);      // => 48
 console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, items: [] }
 ```
 
+### Controlling model lookups
+
+By default, the class `@model` decorator uses the `name` property of each class as a lookup key so
+that `hasMany` and `belongsTo` relation ships can be established.
+
+This allows things like the below mappings to still work even though the two files can't easily include each other:
+
+
+```javascript
+// chair.js
+
+import { model, belongsTo } from 'mobx-decorated-models';
+
+@model
+class Chair {
+    belongsTo 'table'
+}
+
+
+// table.js
+import { model, hasMany } from 'mobx-decorated-models';
+
+@model
+class Table {
+    hasMany({ model: 'Chair' }) 'seats'
+}
+```
+
+This works well enough, however using the `name` property is fragile, since it relies on the class name
+not changing. Certain JS minimizers may rename classes.
+
+If custom logic is needed, it's possible to supply custom "record" and "lookup" functions.
+
+*Example* that uses a static `identifiedBy` property.
+
+
+```javascript
+import { model, lookupModelUsing, rememberModelUsing } from 'mobx-decorated-models';
+import { capitalize, singularize } from 'utility';
+
+const Models = {};
+
+lookupModelUsing((propertyName, propertyOptions) => {
+   return Models[propertyOptions.className] ||
+       Models[capitalize(propertyName)] ||
+           Models[capitalize(singularize(propertyName))];
+});
+rememberModelUsing(klass => Models[klass.identifiedBy] = klass);
+
+@model
+class ATestingModel {
+    static identifiedBy = 'test';
+    belongsTo document;
+}
+
+@model
+class Document {
+    static identifiedBy = 'document';
+    hasMany({ className: 'test' }) testRuns;
+}
+```
+
 ### Decorators
-
-
 
 #### model
 
 Marks a class as serializable.
 
-It adds a few convenience methods:
+It adds a few convenience methods to classes:
 
  * static `deserialize` method.  Used to turn JSON structure into a model (or collection of models)
  * an `update` method.  Updates a model's attributes and child associations.
  * `serialize`.  Converts the model's attributes and it's associations to JSON.
+
+However, it's primary purpose is to remember classes for hasMany/belongsTo lookups. See discussion
+above regarding `lookupModelUsing` and `rememberModelUsing`.
 
 #### identifier
 
@@ -121,5 +184,4 @@ As in `belongsTo`, can be optionally given an option object with a `className` p
 
 # Future plans
 
- * Use a provided lookup function to control the lookup
- * Sessions properties that will be set from JSON but won't be serialized.
+ * Sessions: properties that will be set from JSON but won't be serialized.  https://github.com/mobxjs/serializr/pull/32 is needed before this can be supported
