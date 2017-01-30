@@ -1,41 +1,41 @@
 {
-    "name": "mobx-decorated-models",
-    "version": "0.0.2",
-    "description": "Decorators to make using Mobx for model type structures easier",
-    "main": "dist/build.full.js",
-    "module": "dist/build.module.js",
-    "jsnext:main": "dist/build.module.js",
-    "repository": "https://github.com/nathanstitt/mobx-decorated-models",
-    "author": "Nathan Stitt",
-    "license": "MIT",
-    "dependencies": {
-        "mobx": "^3.0.2",
-        "serializr": "^1.1.9"
-    },
-    "scripts": {
-        "test": "./node_modules/jest-cli/bin/jest.js",
-        "build": "rollup -c",
-        "prepublish": "npm build && npm test"
-    },
-    "keywords": [
-        "mobx",
-        "model",
-        "json",
-        "serialize",
-        "deserialize"
-    ],
-    "devDependencies": {
-        "babel": "^6.5.2",
-        "babel-loader": "^6.2.10",
-        "babel-plugin-add-module-exports": "^0.2.1",
-        "babel-plugin-external-helpers": "^6.22.0",
-        "babel-plugin-transform-class-properties": "^6.22.0",
-        "babel-plugin-transform-decorators-legacy": "^1.3.4",
-        "babel-preset-es2015": "^6.22.0",
-        "babel-preset-stage-2": "^6.22.0",
-        "babelrc-rollup": "^3.0.0",
-        "jest": "^18.1.0",
-        "rollup": "^0.41.4",
-        "rollup-plugin-babel": "^2.7.1"
-    }
+  "name": "mobx-decorated-models",
+  "version": "0.0.3",
+  "description": "Decorators to make using Mobx for model type structures easier",
+  "main": "dist/build.full.js",
+  "module": "dist/build.module.js",
+  "jsnext:main": "dist/build.module.js",
+  "repository": "https://github.com/nathanstitt/mobx-decorated-models",
+  "author": "Nathan Stitt",
+  "license": "MIT",
+  "dependencies": {
+    "mobx": "^3.0.2",
+    "serializr": "^1.1.9"
+  },
+  "scripts": {
+    "test": "./node_modules/jest-cli/bin/jest.js",
+    "build": "rollup -c",
+    "prepublish": "npm build && npm test"
+  },
+  "keywords": [
+    "mobx",
+    "model",
+    "json",
+    "serialize",
+    "deserialize"
+  ],
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "babelrc-rollup": "^3.0.0",
+    "jest": "^18.1.0",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1"
+  }
 }
