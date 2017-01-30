@@ -39,7 +39,7 @@ describe('Property Decorators', () => {
     });
 
     it('can objserve associations', () => {
-        const container = Container.deserialize({ id: 1, firstName: 'Bob', lastName: 'Smith' });
+        const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
         const spy = jest.fn();
         autorun(() => {
             spy(container.boxes.length);
@@ -51,4 +51,25 @@ describe('Property Decorators', () => {
         expect(container.areaInUse).toEqual(960);
         expect(spy).toHaveBeenCalledTimes(3);
     });
+
+    it('can set property to be object', () => {
+        const box = Box.deserialize({
+            width: 3, metadata: { barcode: 'Z12', color: 'black' },
+        });
+        expect(box.metadata.toJS()).toEqual({ barcode: 'Z12', color: 'black' });
+        expect(box.serialize()).toEqual({
+            container: undefined, depth: 1, height: 1, id: undefined, width: 3,
+            metadata: { barcode: 'Z12', color: 'black' },
+        });
+    });
+
+    it('can set property to be array', () => {
+        const tags = ['one', 'two', 'three'];
+        const container = Container.deserialize({ id: 1, tags });
+        expect(container.tags.slice()).toEqual(tags);
+        expect(container.serialize()).toEqual({
+            boxes: [], id: 1, location: undefined, name: undefined, tags,
+        });
+    });
+
 });

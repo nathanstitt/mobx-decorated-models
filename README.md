@@ -78,6 +78,23 @@ The primary key for the model
 
 marks a class property as observable and serializable.
 
+The type of field can be set to `array` or `object` by specifying options.
+
+*example:*
+
+```javascript
+class Foo {
+  @field({ type: 'object' }) options; // will default to an observable map
+  @field({ type: 'array'  }) tags;    // defaults to []
+}
+
+const foo = new Foo();
+foo.tags.push('one');
+foo.options.set('one', 1);
+foo.serialize(); // => { tags: ['one'], options: { one: 1 } }
+```
+
+
 #### belongsTo
 
 Makes a property as referring to another model.  Will attempt to map

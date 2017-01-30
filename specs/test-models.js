@@ -15,6 +15,8 @@ export class Box extends RectangularCuboid {
     @field height = 1;
     @field depth  = 1;
 
+    @field({ type: 'object' }) metadata;
+
     @computed get volume() {
         return this.width * this.height * this.depth;
     }
@@ -28,6 +30,8 @@ export class Container extends RectangularCuboid {
 
     @field name;
     @field location;
+
+    @field({ type: 'array' }) tags = [];
 
     @computed get description() {
         return `${this.name} ${this.location}`;

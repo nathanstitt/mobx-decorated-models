@@ -3,12 +3,17 @@ import { Container, Box } from './test-models';
 describe('Class Decorators', () => {
 
     it('adds static deserialize method and serialize to prototype', () => {
-        const attrs = { id: 42, name: 'TV1', location: 'mid-ship', boxes: [
+        const attrs = { id: 42, name: 'TV1', location: 'mid-ship', tags: [], boxes: [
             { id: 1, width: 8, depth: 12, height: 8 },
         ] };
         const container = Container.deserialize(attrs);
         expect(container.boxes).toHaveLength(1);
-        expect(container.serialize()).toEqual(attrs);
+        expect(container.serialize()).toEqual({
+            id: 42, location: 'mid-ship', name: 'TV1', tags: [],
+            boxes: [
+                { container: undefined, depth: 12, height: 8, id: 1, metadata: {}, width: 8},
+            ],
+        });
     });
 
     it('can deserialize arrays', () => {
@@ -30,8 +35,10 @@ describe('Class Decorators', () => {
         } };
         const box = new Box();
         box.update(attrs);
-        attrs.container.boxes = [];
-        expect(box.serialize()).toEqual(attrs);
+        expect(box.serialize()).toEqual({
+            container: { boxes: [], id: 1, location: 'Building #1', name: '#12', tags: [] },
+            depth: 12, height: 4, id: 2, metadata: {}, width: 3,
+        });
     });
 
     it('works with belongsTo', () => {
@@ -39,22 +46,24 @@ describe('Class Decorators', () => {
         const container = { id: 1, name: '#12', location: 'Building #1' };
         box.update({ id: 32, width: 3, depth: 12, height: 4, container });
         expect(box.serialize()).toEqual({
-            id: 32, width: 3, depth: 12, height: 4,
-            container: Object.assign({}, container, { boxes: [] }),
+            container: {
+                id: 1, boxes: [], tags: [],
+                location: 'Building #1', name: '#12',
+            },
+            depth: 12, height: 4, id: 32, metadata: {}, width: 3,
         });
     });
 
-    xit('hasMany', () => {
+    it('hasMany', () => {
         const container = new Container({ id: 1, name: 'C23', location: 'z1' });
         container.boxes.push(new Box({ id: 1, width: 8, depth: 12, height: 8 }));
         container.boxes.push(new Box({ id: 2, width: 3, depth: 12, height: 4 }));
         container.boxes[1].x = 4;
-
         expect(container.serialize()).toEqual({
-            id: 1, name: 'C23', location: 'z1',
+            id: undefined, location: undefined, name: undefined, tags: [],
             boxes: [
-                { id: 1, width: 8, depth: 12, height: 8, container: undefined },
-                { id: 2, width: 4, depth: 12, height: 4, container: undefined },
+                { container: undefined, depth: 1, height: 1, id: undefined, metadata: {}, width: 1 },
+                { container: undefined, depth: 1, height: 1, id: undefined, metadata: {}, width: 1 },
             ],
         });
     });
