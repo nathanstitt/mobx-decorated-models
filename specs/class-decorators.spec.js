@@ -57,14 +57,14 @@ describe('Class Decorators', () => {
         const container = new Container({ id: 1, name: 'C23', location: 'z1' });
         container.boxes.push(new Box());
         container.boxes.push(new Box());
-        container.boxes[1].x = 4;
+        container.boxes[1].width = 4;
         // hasMany sets the inverseOf, but it isn't serialized
         expect(container.boxes[0].container).toBe(container);
         expect(container.serialize()).toEqual({
-            id: undefined, location: undefined, name: undefined, tags: [],
+            id: 1, location: 'z1', name: 'C23', tags: [],
             boxes: [
-                { depth: 1, height: 1, id: undefined, metadata: {}, width: 1 },
-                { depth: 1, height: 1, id: undefined, metadata: {}, width: 1 },
+                { depth: 1, height: 1, metadata: {}, width: 1 },
+                { depth: 1, height: 1, metadata: {}, width: 4 },
             ],
         });
     });
