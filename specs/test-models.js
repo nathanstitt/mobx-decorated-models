@@ -1,13 +1,13 @@
 import { observable, computed } from 'mobx';
-import { model, field, session, belongsTo, hasMany, identifier } from '../index';
+import { modelDecorator, field, session, belongsTo, hasMany, identifier } from '../index';
 
 class RectangularCuboid {
-    constructor() {
+    constructor(attrs) {
         this.isCuboid = true;
     }
 }
 
-@model
+@modelDecorator
 export class Box extends RectangularCuboid {
     @identifier id;
 
@@ -25,7 +25,7 @@ export class Box extends RectangularCuboid {
     @belongsTo container;
 }
 
-@model
+@modelDecorator
 export class Container extends RectangularCuboid {
     @identifier id;
 

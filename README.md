@@ -26,7 +26,7 @@ reference of the requirement is stored and then later resolved when the class be
 ```javascript
 import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
 
-@model
+@modelDecorator
 export class Box {
     @identifier id;
     @field width  = 0;
@@ -58,7 +58,7 @@ console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, item
 
 ### Controlling model lookups
 
-By default, the class `@model` decorator uses the `name` property of each class as a lookup key so
+By default, the class `@modelDecorator` uses the `name` property of each class as a lookup key so
 that `hasMany` and `belongsTo` relation ships can be established.
 
 This allows things like the below mappings to still work even though the two files can't easily include each other:
@@ -67,9 +67,9 @@ This allows things like the below mappings to still work even though the two fil
 ```javascript
 // chair.js
 
-import { model, belongsTo } from 'mobx-decorated-models';
+import { modelDecorator, belongsTo } from 'mobx-decorated-models';
 
-@model
+@modelDecorator
 class Chair {
     belongsTo 'table'
 }
@@ -78,7 +78,7 @@ class Chair {
 // table.js
 import { model, hasMany } from 'mobx-decorated-models';
 
-@model
+@modelDecorator
 class Table {
     hasMany({ model: 'Chair' }) 'seats'
 }
@@ -105,13 +105,13 @@ lookupModelUsing((propertyName, propertyOptions) => {
 });
 rememberModelUsing(klass => Models[klass.identifiedBy] = klass);
 
-@model
+@modelDecorator
 class ATestingModel {
     static identifiedBy = 'test';
     belongsTo document;
 }
 
-@model
+@modelDecorator
 class Document {
     static identifiedBy = 'document';
     hasMany({ className: 'test' }) testRuns;

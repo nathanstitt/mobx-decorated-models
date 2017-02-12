@@ -1,5 +1,5 @@
 import { Container, Box } from './test-models';
-import { model as modelDecorator } from '../index';
+import { modelDecorator } from '../index';
 import * as ModelLookup from '../lib/model-lookup';
 
 describe('Model Lookups', () => {
