@@ -3,6 +3,7 @@ import { modelDecorator, field, session, belongsTo, hasMany, identifier } from '
 
 class RectangularCuboid {
     constructor(attrs) {
+        Object.assign(this, attrs);
         this.isCuboid = true;
     }
 }
