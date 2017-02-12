@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "mobx": "^3.0.2",
-    "serializr": "^1.1.9"
+    "serializr": "https://github.com/nathanstitt/serializr#serializer-args"
   },
   "scripts": {
     "test": "./node_modules/jest-cli/bin/jest.js",

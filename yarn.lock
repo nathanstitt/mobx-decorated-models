@@ -2274,9 +2274,9 @@ sax@^1.1.4:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
 
-serializr@^1.1.9:
+"serializr@https://github.com/nathanstitt/serializr#serializer-args":
   version "1.1.9"
-  resolved "https://registry.yarnpkg.com/serializr/-/serializr-1.1.9.tgz#d9c193deb2cfa724bf3f459560f0ceb7b3bbeba7"
+  resolved "https://github.com/nathanstitt/serializr#eb079fbcb460ab1fe8855d3c0401ed30077b2bdb"
 
 set-blocking@^2.0.0:
   version "2.0.0"

@@ -14,8 +14,9 @@ export class Box extends RectangularCuboid {
     @field width  = 1;
     @field height = 1;
     @field depth  = 1;
-
     @field({ type: 'object' }) metadata;
+
+    @session color;
 
     @computed get volume() {
         return this.width * this.height * this.depth;
@@ -30,14 +31,21 @@ export class Container extends RectangularCuboid {
 
     @field name;
     @field location;
-
     @field({ type: 'array' }) tags = [];
+
+    @session color;
 
     @computed get description() {
         return `${this.name} ${this.location}`;
     }
 
-    @hasMany({ className: 'Box', inverseOf: 'container' }) boxes;
+    @hasMany({
+        className: 'Box',
+        inverseOf: 'container',
+        defaults() {
+            return { color: this.color };
+        },
+    }) boxes;
 
     @computed get areaInUse() {
         return this.boxes.reduce((acc, box) => (acc += box.volume), 0);

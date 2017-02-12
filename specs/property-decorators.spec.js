@@ -33,20 +33,33 @@ describe('Property Decorators', () => {
         expect(box.volume).toEqual(72);
     });
 
+    it('sets defaults for hasMany', () => {
+        const container = Container.deserialize({ color: 'blue' });
+        container.boxes.push({});
+        expect(container.boxes[0].color).toEqual('blue');
+    });
+
+    it('sets an inverse', () => {
+        const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
+        container.boxes.push({});
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        expect(container.boxes[0].container).toEqual(container);
+    });
+
     xit('merges both attributes and session props', () => {
         const box = Box.deserialize({ width: 3, isVisible: true });
         expect(box.isVisible).toEqual(true);
     });
 
-    it('can objserve associations', () => {
+    it('can observe associations', () => {
         const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
         const spy = jest.fn();
         autorun(() => {
             spy(container.boxes.length);
         });
         expect(container.areaInUse).toEqual(0);
-        container.boxes.push(Box.deserialize({ id: 1, width: 8, depth: 12, height: 8 }));
-        container.boxes.push(Box.deserialize({ id: 2, width: 3, depth: 12, height: 4 }));
+        container.boxes.push({ id: 1, width: 8, depth: 12, height: 8 });
+        container.boxes.push({ id: 2, width: 3, depth: 12, height: 4 });
         container.boxes[1].width = 4;
         expect(container.areaInUse).toEqual(960);
         expect(spy).toHaveBeenCalledTimes(3);

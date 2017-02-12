@@ -177,10 +177,42 @@ class Foo {
 
 #### hasMany
 
-Makes a property as belonging to an array of model.  Sets the default value to an observable array
+Marks a property as belonging to an mobx observable array of models.
+
+Sets the default value to an empty observable array
 
 As in `belongsTo`, can be optionally given an option object with a `className` property to control the mapping.
 
+`hasMany` also accepts `inverseOf` and `defaults` properties.  If an inverseOf is provided,
+when a model is added to the array, it will have the property named by `inverseOf` to the parent model
+
+If `defaults` are provided the new model's attributes will be defaulted to them.  `defaults` may
+also be a function, which will be called and it's return values used.
+
+
+```javascript
+class Tire {
+    @session numberInSet;
+    @belongsTo vehicle; // will be autoset by the `inverseOf: auto` on Car
+}
+
+class Car {
+    @belongsTo home;
+    @session color;
+    @hasMany({ className: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
+}
+
+class Garage {
+    @session owner;
+    @hasMany({
+        className: 'Car',
+        inverseOf: 'home',
+        defaults(collection, parent) {
+            return { color: this.owner.favoriteColor };
+        }
+    }) cars;
+}
+```
 
 # Future plans
 
