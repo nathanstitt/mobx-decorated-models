@@ -54,7 +54,7 @@ describe('Property Decorators', () => {
             name: 'HMS Mobx',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
-        expect(ship.box.container_association_name).toEqual('box')
+        expect(ship.box.container_association_name).toEqual('box');
     });
 
     it('merges both attributes and session props', () => {
@@ -82,7 +82,7 @@ describe('Property Decorators', () => {
         const box = Box.deserialize({
             width: 3, metadata: { barcode: 'Z12', color: 'black' },
         });
-        expect(box.metadata.toJS()).toEqual({ barcode: 'Z12', color: 'black' });
+        expect(box.metadata).toEqual({ barcode: 'Z12', color: 'black' });
         expect(box.serialize()).toEqual({
             container: undefined, depth: 1, height: 1, id: undefined, width: 3,
             metadata: { barcode: 'Z12', color: 'black' },
