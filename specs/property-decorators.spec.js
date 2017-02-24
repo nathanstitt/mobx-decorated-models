@@ -1,4 +1,4 @@
-import { Box, Container } from './test-models';
+import { Box, Container, Ship } from './test-models';
 import { autorun, observable } from 'mobx';
 import { update } from 'serializr';
 
@@ -39,16 +39,27 @@ describe('Property Decorators', () => {
         expect(container.boxes[0].color).toEqual('blue');
     });
 
-    it('sets an inverse', () => {
+    it('sets an inverse for hasMany', () => {
         const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
         container.boxes.push({});
         expect(container.boxes[0]).toBeInstanceOf(Box);
         expect(container.boxes[0].container).toEqual(container);
     });
 
-    xit('merges both attributes and session props', () => {
-        const box = Box.deserialize({ width: 3, isVisible: true });
-        expect(box.isVisible).toEqual(true);
+    it('sets an inverse for belongsTo', () => {
+        const ship = Ship.deserialize({ name: 'HMS Mobx', box: { width: 42 } });
+        expect(ship.box.container).toBe(ship);
+        expect(ship.serialize()).toEqual({
+            name: 'HMS Mobx',
+            box: { depth: 1, height: 1, metadata: {}, width: 42 },
+        });
+    });
+
+    it('merges both attributes and session props', () => {
+        const box = Box.deserialize({ width: 3, color: 'red' });
+        expect(box.color).toEqual('red');
+        // no color
+        expect(box.serialize()).toEqual({ depth: 1, height: 1, metadata: {}, width: 3 });
     });
 
     it('can observe associations', () => {

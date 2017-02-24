@@ -9,6 +9,13 @@ class RectangularCuboid {
 }
 
 @modelDecorator
+export class Ship {
+    @identifier name;
+
+    @belongsTo({ inverseOf: 'container' }) box;
+}
+
+@modelDecorator
 export class Box extends RectangularCuboid {
     @identifier id;
 

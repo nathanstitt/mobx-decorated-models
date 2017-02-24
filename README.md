@@ -166,14 +166,33 @@ look for a class named `Box`.
 
 Optionally can be given an option object with a `className` property to control the mapping.
 
+
 *example:*
 
 ```javascript
-class Foo {
-  @belongsTo bar; // will look for a `Bar` class
-  @belongsTo({ className: 'Person' }) name; // looks for class `Person`
+class Person({
+    @identifier id;
+    @field name;
+    @belongsTo({ className: 'Pants', inverseOf: 'owner' }) outfit;
+})
+
+class Pants {
+  @session color;
+  @belongsTo({ className: 'Person' }) owner; // looks for class `Person`
 }
 ```
+
+Can be given a `inverseOf` which will set auto set this property to it's parent when it's deserialized.
+
+For instance the Pants model above will have it's owner property set to the "Ralph" Person model:
+
+```javascript
+Person.deserialize({
+    id: 1, name: 'Ralph', outfit: { color: 'RED' }
+})
+```
+
+**Note**: When using `inverseOf`, the auto-set property is not serialized in order to prevent circular references.
 
 #### hasMany
 
