@@ -43,7 +43,8 @@ describe('Property Decorators', () => {
         const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
         container.boxes.push({});
         expect(container.boxes[0]).toBeInstanceOf(Box);
-        expect(container.boxes[0].container).toEqual(container);
+        expect(container.boxes[0].container).toBe(container);
+        expect(container.boxes[0].container_association_name).toEqual('boxes');
     });
 
     it('sets an inverse for belongsTo', () => {
@@ -53,6 +54,7 @@ describe('Property Decorators', () => {
             name: 'HMS Mobx',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
+        expect(ship.box.container_association_name).toEqual('box')
     });
 
     it('merges both attributes and session props', () => {
