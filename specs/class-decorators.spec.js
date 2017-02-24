@@ -28,6 +28,24 @@ describe('Class Decorators', () => {
         expect(boxes[2].id).toEqual(3);
     });
 
+    it('can serialize/deserialize nested objects', () => {
+        const box = new Box();
+        box.update({
+            metadata: {
+                one: 1,
+                two: ['one', 'three'],
+                four: { test: true },
+            },
+        });
+        expect(box.serialize().metadata).toEqual(
+            expect.objectContaining({
+                one: 1,
+                four: expect.objectContaining({ test: true }),
+                two: expect.arrayContaining(['one', 'three']),
+            }),
+        );
+    });
+
     it('adds update method to prototype', () => {
         const attrs = { id: 2, width: 3, depth: 12, height: 4, container: {
             id: 1, name: '#12', location: 'Building #1',
