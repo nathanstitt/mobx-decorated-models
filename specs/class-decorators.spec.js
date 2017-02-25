@@ -44,6 +44,8 @@ describe('Class Decorators', () => {
                 two: expect.arrayContaining(['one', 'three']),
             }),
         );
+        expect(box.metadata.one).toEqual(1);
+        expect(box.metadata.four.test).toBe(true);
     });
 
     it('adds update method to prototype', () => {
@@ -62,6 +64,7 @@ describe('Class Decorators', () => {
         const box = new Box();
         const container = { id: 1, name: '#12', location: 'Building #1' };
         box.update({ id: 32, width: 3, depth: 12, height: 4, container });
+        expect(box.container).toBeInstanceOf(Container);
         expect(box.serialize()).toEqual({
             container: {
                 id: 1, boxes: [], tags: [],
