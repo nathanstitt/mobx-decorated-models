@@ -31,6 +31,7 @@ export class Box extends RectangularCuboid {
         return this.width * this.height * this.depth;
     }
     @belongsTo vessel;
+    @belongsTo({ model: 'boat' }) watercraft;
     @belongsTo container;
 }
 

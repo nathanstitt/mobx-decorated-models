@@ -47,6 +47,11 @@ describe('Property Decorators', () => {
         expect(container.boxes[0].container_association_name).toEqual('boxes');
     });
 
+    it('finds model for belongsTo', () => {
+        const box = Box.deserialize({ id: 1, watercraft: { name: 'Boaty' } });
+        expect(box.watercraft).toBeInstanceOf(Ship);
+    });
+
     it('sets an inverse for belongsTo', () => {
         const ship = Ship.deserialize({ name: 'HMS Mobx', box: { width: 42 } });
         expect(ship.box.depth).toEqual(1);
