@@ -112,6 +112,23 @@ describe('Property Decorators', () => {
         expect(ship.box.vessel).toBe(ship);
     });
 
+    it('passes on values that can’t be handled', () => {
+        const ship = Ship.deserialize({ name: 'HMS Glory' });
+        expect(ship.box).toBeUndefined();
+        ship.box = undefined;
+        expect(ship.box).toBeUndefined();
+        ship.box = 1;
+        expect(ship.box).toBe(1);
+        const container = new Container();
+        container.boxes = [{ id: 1 }];
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        container.boxes = undefined;
+        expect(container.boxes).toBeUndefined();
+        container.boxes = [{ id: 1 }, null];
+        expect(container.boxes[0].id).toBe(1);
+        expect(container.boxes[1]).toBeNull();
+    });
+
     it('guards against setting a hasMany', () => {
         const container = Container.deserialize({ id: 1 });
         const originalBoxes = container.boxes;
