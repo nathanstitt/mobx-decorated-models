@@ -80,7 +80,7 @@ import { model, hasMany } from 'mobx-decorated-models';
 
 @modelDecorator('table')
 class Table {
-    hasMany({ className: 'chair' }) 'seats'
+    hasMany({ classId: 'chair' }) 'seats'
 }
 ```
 
@@ -99,7 +99,7 @@ import { capitalize, singularize } from 'utility';
 const Models = {};
 
 lookupModelUsing((propertyName, propertyOptions) => {
-   return Models[propertyOptions.className] ||
+   return Models[propertyOptions.classId] ||
        Models[capitalize(propertyName)] ||
            Models[capitalize(singularize(propertyName))];
 });
@@ -114,7 +114,7 @@ class ATestingModel {
 @modelDecorator
 class Document {
     static identifiedBy = 'document';
-    hasMany({ className: 'test' }) testRuns;
+    hasMany({ classId: 'test' }) testRuns;
 }
 ```
 
@@ -165,7 +165,7 @@ Makes a property as referring to another model.  Will attempt to map
 the referenced class based on the name, i.e. a property named `box` will
 look for a class named `Box`.
 
-Optionally can be given an option object with a `className` property to control the mapping.
+Optionally can be given an option object with a `classId` property to control the mapping.
 
 
 *example:*
@@ -175,13 +175,13 @@ Optionally can be given an option object with a `className` property to control 
 class Person({
     @identifier id;
     @field name;
-    @belongsTo({ className: 'Pants', inverseOf: 'owner' }) outfit;
+    @belongsTo({ classId: 'Pants', inverseOf: 'owner' }) outfit;
 })
 
 @modelDecorator
 class Pants {
   @session color;
-  @belongsTo({ className: 'Person' }) owner; // looks for class `Person`
+  @belongsTo({ classId: 'Person' }) owner; // looks for class `Person`
 }
 ```
 
@@ -203,7 +203,7 @@ Marks a property as belonging to an mobx observable array of models.
 
 Sets the default value to an empty observable array
 
-As in `belongsTo`, can be optionally given an option object with a `className` property to control the mapping.
+As in `belongsTo`, can be optionally given an option object with a `classId` property to control the mapping.
 
 `hasMany` also accepts `inverseOf` and `defaults` properties.  If an inverseOf is provided,
 when a model is added to the array, it will have the property named by `inverseOf` to the parent model
@@ -223,14 +223,14 @@ class Tire {
 class Car {
     @belongsTo home;
     @session color;
-    @hasMany({ className: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
+    @hasMany({ classId: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
 }
 
 @modelDecorator
 class Garage {
     @session owner;
     @hasMany({
-        className: 'Car',
+        classId: 'Car',
         inverseOf: 'home',
         defaults(collection, parent) {
             return { color: this.owner.favoriteColor };
