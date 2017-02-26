@@ -8,14 +8,14 @@ class RectangularCuboid {
     }
 }
 
-@modelDecorator
+@modelDecorator('boat')
 export class Ship {
     @identifier name;
 
     @belongsTo({ inverseOf: 'vessel' }) box;
 }
 
-@modelDecorator
+@modelDecorator('box')
 export class Box extends RectangularCuboid {
     @identifier id;
 
@@ -34,7 +34,7 @@ export class Box extends RectangularCuboid {
     @belongsTo container;
 }
 
-@modelDecorator
+@modelDecorator('container')
 export class Container extends RectangularCuboid {
     @identifier id;
 
@@ -49,7 +49,7 @@ export class Container extends RectangularCuboid {
     }
 
     @hasMany({
-        className: 'Box',
+        className: 'box',
         inverseOf: 'container',
         defaults() {
             return { color: this.color };

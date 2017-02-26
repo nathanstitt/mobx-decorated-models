@@ -26,7 +26,7 @@ reference of the requirement is stored and then later resolved when the class be
 ```javascript
 import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
 
-@modelDecorator
+@modelDecorator('box')
 export class Box {
     @identifier id;
     @field width  = 0;
@@ -39,7 +39,7 @@ export class Box {
 
     @hasMany items;
     @belongsTo container;
-    @belongsTo({ model: 'Address' }) warehouse;
+    @belongsTo({ model: 'address' }) warehouse;
 }
 ```
 
@@ -58,7 +58,7 @@ console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, item
 
 ### Controlling model lookups
 
-By default, the class `@modelDecorator` uses the `name` property of each class as a lookup key so
+The class `@modelDecorator` uses either the `name` property of each class, or can be supplied with a unique string that should be used  as a lookup key so
 that `hasMany` and `belongsTo` relation ships can be established.
 
 This allows things like the below mappings to still work even though the two files can't easily include each other:
@@ -69,7 +69,7 @@ This allows things like the below mappings to still work even though the two fil
 
 import { modelDecorator, belongsTo } from 'mobx-decorated-models';
 
-@modelDecorator
+@modelDecorator('chair')
 class Chair {
     belongsTo 'table'
 }
@@ -78,9 +78,9 @@ class Chair {
 // table.js
 import { model, hasMany } from 'mobx-decorated-models';
 
-@modelDecorator
+@modelDecorator('table')
 class Table {
-    hasMany({ model: 'Chair' }) 'seats'
+    hasMany({ className: 'chair' }) 'seats'
 }
 ```
 
@@ -146,6 +146,7 @@ The type of field can be set to `array` or `object` by specifying options.
 *example:*
 
 ```javascript
+@modelDecorator
 class Foo {
   @field({ type: 'object' }) options; // will default to an observable map
   @field({ type: 'array'  }) tags;    // defaults to []
@@ -170,12 +171,14 @@ Optionally can be given an option object with a `className` property to control 
 *example:*
 
 ```javascript
+@modelDecorator
 class Person({
     @identifier id;
     @field name;
     @belongsTo({ className: 'Pants', inverseOf: 'owner' }) outfit;
 })
 
+@modelDecorator
 class Pants {
   @session color;
   @belongsTo({ className: 'Person' }) owner; // looks for class `Person`
@@ -210,17 +213,20 @@ also be a function, which will be called and it's return values used.
 
 
 ```javascript
+@modelDecorator
 class Tire {
     @session numberInSet;
     @belongsTo vehicle; // will be autoset by the `inverseOf: auto` on Car
 }
 
+@modelDecorator
 class Car {
     @belongsTo home;
     @session color;
     @hasMany({ className: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
 }
 
+@modelDecorator
 class Garage {
     @session owner;
     @hasMany({
@@ -232,6 +238,34 @@ class Garage {
     }) cars;
 }
 ```
+
+## unresolvedAssociations
+
+mobx-decorated-models attempts to do lazy lookups for the model that **hasMany** and **belongsTo** should use.  In order to do so, it keeps track of associations that are not immediatly resolved in the hope that the model for them will be decorated with **@modelDecorator** later.
+
+However if the model is never decorated the association will continue to be set to a plain observable.object.
+
+Properties that are not resolved can be listed using the `unresolvedAssociations` method, which will return an array of object with model and property keys.
+
+**Example:**
+import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
+
+@modelDecorator
+class Parallelogram {
+
+}
+
+@modelDecorator('box')
+class Box {
+    hasMany sides;
+}
+
+unresolvedAssociations().forEach(({ model, property }) => {
+    console.log(`The model for ${model.identifiedBy}(${property}) cannot be found`);
+});
+
+// outputs: The model for box(sides) cannot be found
+
 
 # Future plans
 
