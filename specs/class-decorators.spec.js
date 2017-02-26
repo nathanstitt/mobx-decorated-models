@@ -1,4 +1,6 @@
-import { Container, Box } from './test-models';
+import { Container, Box, Ship } from './test-models';
+import { unresolvedAssociations } from '../lib/class-decorator';
+
 
 describe('Class Decorators', () => {
     it('adds static deserialize method and serialize to prototype', () => {
@@ -88,5 +90,16 @@ describe('Class Decorators', () => {
                 { depth: 1, height: 1, metadata: {}, width: 4 },
             ],
         });
+    });
+
+    it('reports on associations that are not resolved', () => {
+        const box = Box.deserialize({ vessel: { id: 1 } });
+        expect(box.vessel).toEqual({ id: 1 });
+        expect(box.vessel).not.toBeInstanceOf(Ship);
+
+        const pending = unresolvedAssociations();
+        expect(pending).toHaveLength(1);
+        expect(pending[0].model).toBe(Box);
+        expect(pending[0].property).toEqual('vessel');
     });
 });

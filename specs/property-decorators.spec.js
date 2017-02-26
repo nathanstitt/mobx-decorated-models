@@ -1,6 +1,6 @@
+import { autorun } from 'mobx';
 import { Box, Container, Ship } from './test-models';
-import { autorun, observable } from 'mobx';
-import { update } from 'serializr';
+import { isSerializable } from '../lib/serializable';
 
 describe('Property Decorators', () => {
 
@@ -49,12 +49,14 @@ describe('Property Decorators', () => {
 
     it('sets an inverse for belongsTo', () => {
         const ship = Ship.deserialize({ name: 'HMS Mobx', box: { width: 42 } });
-        expect(ship.box.container).toBe(ship);
+        expect(ship.box.depth).toEqual(1);
+        expect(isSerializable(ship, 'box')).toBe(true);
+        expect(isSerializable(ship.box, 'vessel')).toBe(false);
         expect(ship.serialize()).toEqual({
             name: 'HMS Mobx',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
-        expect(ship.box.container_association_name).toEqual('box');
+        expect(ship.box.vessel_association_name).toEqual('box');
     });
 
     it('merges both attributes and session props', () => {
@@ -97,5 +99,25 @@ describe('Property Decorators', () => {
             boxes: [], id: 1, location: undefined, name: undefined, tags,
         });
     });
+
+    it('guards against setting a belongsTo', () => {
+        const ship = Ship.deserialize({ name: 'HMS Glory' });
+        ship.box = { width: 1, height: 1, depth: 1 };
+        expect(ship.box).toBeInstanceOf(Box);
+        expect(ship.box.vessel).toBe(ship);
+    });
+
+    it('guards against setting a hasMany', () => {
+        const container = Container.deserialize({ id: 1 });
+        const originalBoxes = container.boxes;
+        container.boxes = [
+            { width: 1, height: 1, depth: 1 },
+            { width: 2, height: 2, depth: 2 },
+        ];
+        expect(container.boxes).toBe(originalBoxes);
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        expect(container.boxes[1].container).toBe(container);
+    });
+
 
 });

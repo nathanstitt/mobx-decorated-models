@@ -12,7 +12,7 @@ class RectangularCuboid {
 export class Ship {
     @identifier name;
 
-    @belongsTo({ inverseOf: 'container' }) box;
+    @belongsTo({ inverseOf: 'vessel' }) box;
 }
 
 @modelDecorator
@@ -25,11 +25,12 @@ export class Box extends RectangularCuboid {
     @field({ type: 'object' }) metadata;
 
     @session color;
+    @session vessel_association_name;
 
     @computed get volume() {
         return this.width * this.height * this.depth;
     }
-
+    @belongsTo vessel;
     @belongsTo container;
 }
 
