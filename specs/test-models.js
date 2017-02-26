@@ -49,7 +49,7 @@ export class Container extends RectangularCuboid {
     }
 
     @hasMany({
-        classId: 'box',
+        model: 'box',
         inverseOf: 'container',
         defaults() {
             return { color: this.color };

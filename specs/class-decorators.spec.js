@@ -1,6 +1,6 @@
 import { Container, Box, Ship } from './test-models';
 import { unresolvedAssociations } from '../lib/class-decorator';
-
+import { findModel } from '../lib/model-lookup';
 
 describe('Class Decorators', () => {
     it('adds static deserialize method and serialize to prototype', () => {
@@ -90,6 +90,11 @@ describe('Class Decorators', () => {
                 { depth: 1, height: 1, metadata: {}, width: 4 },
             ],
         });
+    });
+
+    it('uses string identifier with decorator', () => {
+        expect(Ship.identifiedBy).toEqual('boat');
+        expect(findModel('ship', 'boat')).toBe(Ship)
     });
 
     it('reports on associations that are not resolved', () => {
