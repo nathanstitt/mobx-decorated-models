@@ -80,41 +80,7 @@ import { model, hasMany } from 'mobx-decorated-models';
 
 @modelDecorator('table')
 class Table {
-    hasMany({ classId: 'chair' }) 'seats'
-}
-```
-
-This works well enough, however using the `name` property is fragile, since it relies on the class name
-not changing. Certain JS minimizers may rename classes.
-
-If custom logic is needed, it's possible to supply custom "record" and "lookup" functions.
-
-*Example* that uses a static `identifiedBy` property.
-
-
-```javascript
-import { model, lookupModelUsing, rememberModelUsing } from 'mobx-decorated-models';
-import { capitalize, singularize } from 'utility';
-
-const Models = {};
-
-lookupModelUsing((propertyName, propertyOptions) => {
-   return Models[propertyOptions.classId] ||
-       Models[capitalize(propertyName)] ||
-           Models[capitalize(singularize(propertyName))];
-});
-rememberModelUsing(klass => Models[klass.identifiedBy] = klass);
-
-@modelDecorator
-class ATestingModel {
-    static identifiedBy = 'test';
-    belongsTo document;
-}
-
-@modelDecorator
-class Document {
-    static identifiedBy = 'document';
-    hasMany({ classId: 'test' }) testRuns;
+    hasMany({ model: 'chair' }) 'seats'
 }
 ```
 
@@ -165,8 +131,9 @@ Makes a property as referring to another model.  Will attempt to map
 the referenced class based on the name, i.e. a property named `box` will
 look for a class named `Box`.
 
-Optionally can be given an option object with a `classId` property to control the mapping.
+Optionally can be given an option object with a `model` property to control the mapping.
 
+`model` can be either a string which matches a value given to the modelDecorator, or a reference to the model itself.
 
 *example:*
 
@@ -175,13 +142,17 @@ Optionally can be given an option object with a `classId` property to control th
 class Person({
     @identifier id;
     @field name;
-    @belongsTo({ classId: 'Pants', inverseOf: 'owner' }) outfit;
+    // finds a model that was set to use the id `pants` by it's decorator
+    @belongsTo({ model: 'pants', inverseOf: 'owner' }) outfit;
+    speak(msg) {
+        console.log(`${this.name} says: ${msg}`);
+    }
 })
 
-@modelDecorator
+@modelDecorator('pants')
 class Pants {
   @session color;
-  @belongsTo({ classId: 'Person' }) owner; // looks for class `Person`
+  @belongsTo({ model: Person }) owner; // no lookup, will just use the class `Person`
 }
 ```
 
@@ -195,6 +166,16 @@ Person.deserialize({
 })
 ```
 
+An interceptor is installed that will convert bare objects to a model.  In the example below, the owner will be set to an instance of Person
+
+```javascript
+const pants = new Pants();
+pants.owner = { id: 1, name: 'Jimmy' };
+
+pants.owner.speak("Hello World!"); // Jimmy says: Hello World
+```
+
+
 **Note**: When using `inverseOf`, the auto-set property is not serialized in order to prevent circular references.
 
 #### hasMany
@@ -203,7 +184,7 @@ Marks a property as belonging to an mobx observable array of models.
 
 Sets the default value to an empty observable array
 
-As in `belongsTo`, can be optionally given an option object with a `classId` property to control the mapping.
+As in `belongsTo`, can be optionally given an option object with a `model` property to control the mapping.
 
 `hasMany` also accepts `inverseOf` and `defaults` properties.  If an inverseOf is provided,
 when a model is added to the array, it will have the property named by `inverseOf` to the parent model
@@ -211,6 +192,7 @@ when a model is added to the array, it will have the property named by `inverseO
 If `defaults` are provided the new model's attributes will be defaulted to them.  `defaults` may
 also be a function, which will be called and it's return values used.
 
+Like `belongsTo`, `hasMany` also converts object assignment to a model
 
 ```javascript
 @modelDecorator
@@ -223,14 +205,14 @@ class Tire {
 class Car {
     @belongsTo home;
     @session color;
-    @hasMany({ classId: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
+    @hasMany({ model: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
 }
 
 @modelDecorator
 class Garage {
     @session owner;
     @hasMany({
-        classId: 'Car',
+        model: 'Car',
         inverseOf: 'home',
         defaults(collection, parent) {
             return { color: this.owner.favoriteColor };
