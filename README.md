@@ -230,6 +230,8 @@ However if the model is never decorated the association will continue to be set 
 Properties that are not resolved can be listed using the `unresolvedAssociations` method, which will return an array of object with model and property keys.
 
 **Example:**
+```javascript
+
 import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
 
 @modelDecorator
@@ -247,6 +249,7 @@ unresolvedAssociations().forEach(({ model, property }) => {
 });
 
 // outputs: The model for box(sides) cannot be found
+```
 
 
 # Future plans
