@@ -84,6 +84,27 @@ class Table {
 }
 ```
 
+### Collections
+
+The same logic that is used for belongsTo can also build a stand-alone collection.  Collections built this way are instances of mobx `observable.array` with an interceptor that converts assigment into model creation.
+
+A collecton can be created like so:
+
+```javascript
+import { createCollection } from 'mobx-decorated-models';
+
+class Foo {
+    constructor(attrs) { Object.assign(this, attrs); }
+    myName() { return this.name; }
+}
+
+const collection = createCollection({ model: ModelInCollection });
+collection.push({ name: 'bar' });
+collection[0].myName(); // will return "bar", since it's coerced into an instance of Foo
+```
+
+Note that the "model" objects a collection is set to do not have to be decorated by the `@identifiedBy` decorator if they're given directly as shown in the exmple above.  However if they were, then the identifier could be given to 'model' instead of the class.
+
 ### Decorators
 
 #### identifiedBy('<identifier>')
