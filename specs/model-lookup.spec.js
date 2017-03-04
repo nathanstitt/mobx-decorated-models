@@ -1,5 +1,5 @@
 import { Container, Box } from './test-models';
-import { modelDecorator } from '../index';
+import { identifiedBy } from '../index';
 import * as ModelLookup from '../lib/model-lookup';
 
 describe('Model Lookups', () => {
@@ -19,7 +19,7 @@ describe('Model Lookups', () => {
     it('is notified when class is decorated', () => {
         const spy = jest.fn();
         ModelLookup.rememberModelUsing(spy);
-        @modelDecorator
+        @identifiedBy('foo')
         class ThisIsTest { }
         expect(spy).toHaveBeenCalledWith(ThisIsTest);
         expect(ModelLookup.findModel('ThisIsTest')).toBeUndefined();

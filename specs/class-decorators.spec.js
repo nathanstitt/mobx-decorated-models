@@ -92,9 +92,10 @@ describe('Class Decorators', () => {
         });
     });
 
-    it('uses string identifier with decorator', () => {
+    it('sets identifier from decorator', () => {
         expect(Ship.identifiedBy).toEqual('boat');
-        expect(findModel('ship', 'boat')).toBe(Ship)
+        expect(() => (Ship.identifiedBy = 'bar')).toThrow();
+        expect(findModel('ship', 'boat')).toBe(Ship);
     });
 
     it('reports on associations that are not resolved', () => {

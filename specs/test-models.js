@@ -1,5 +1,5 @@
 import { observable, computed } from 'mobx';
-import { modelDecorator, field, session, belongsTo, hasMany, identifier } from '../index';
+import { identifiedBy, field, session, belongsTo, hasMany, identifier } from '../index';
 
 class RectangularCuboid {
     constructor(attrs) {
@@ -8,14 +8,14 @@ class RectangularCuboid {
     }
 }
 
-@modelDecorator('boat')
+@identifiedBy('boat')
 export class Ship {
     @identifier name;
 
     @belongsTo({ inverseOf: 'vessel' }) box;
 }
 
-@modelDecorator('box')
+@identifiedBy('box')
 export class Box extends RectangularCuboid {
     @identifier id;
 
@@ -35,7 +35,7 @@ export class Box extends RectangularCuboid {
     @belongsTo container;
 }
 
-@modelDecorator('container')
+@identifiedBy('container')
 export class Container extends RectangularCuboid {
     @identifier id;
 

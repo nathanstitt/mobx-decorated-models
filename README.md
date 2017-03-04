@@ -26,7 +26,7 @@ reference of the requirement is stored and then later resolved when the class be
 ```javascript
 import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
 
-@modelDecorator('box')
+@identifiedBy('box')
 export class Box {
     @identifier id;
     @field width  = 0;
@@ -58,8 +58,8 @@ console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, item
 
 ### Controlling model lookups
 
-The class `@modelDecorator` uses either the `name` property of each class, or can be supplied with a unique string that should be used  as a lookup key so
-that `hasMany` and `belongsTo` relation ships can be established.
+The class `@identifiedBy` accepts a unique string that should be used  as a lookup key so
+that `hasMany` and `belongsTo` relationships can be established.
 
 This allows things like the below mappings to still work even though the two files can't easily include each other:
 
@@ -67,18 +67,18 @@ This allows things like the below mappings to still work even though the two fil
 ```javascript
 // chair.js
 
-import { modelDecorator, belongsTo } from 'mobx-decorated-models';
+import { identifiedBy, belongsTo } from 'mobx-decorated-models';
 
-@modelDecorator('chair')
+@identifiedBy('chair')
 class Chair {
     belongsTo 'table'
 }
 
 
 // table.js
-import { model, hasMany } from 'mobx-decorated-models';
+import { identifiedBy, hasMany } from 'mobx-decorated-models';
 
-@modelDecorator('table')
+@identifiedBy('table')
 class Table {
     hasMany({ model: 'chair' }) 'seats'
 }
@@ -86,13 +86,14 @@ class Table {
 
 ### Decorators
 
-#### model
+#### identifiedBy('<identifier>')
 
 Marks a class as serializable.
 
 It adds a few convenience methods to classes:
 
  * static `deserialize` method.  Used to turn JSON structure into a model (or collection of models)
+ * a read-only static `identifiedBy` value that matches the string provided to the decorator
  * an `update` method.  Updates a model's attributes and child associations.
  * `serialize`.  Converts the model's attributes and it's associations to JSON.
 
@@ -112,7 +113,7 @@ The type of field can be set to `array` or `object` by specifying options.
 *example:*
 
 ```javascript
-@modelDecorator
+@identifiedBy('foo')
 class Foo {
   @field({ type: 'object' }) options; // will default to an observable map
   @field({ type: 'array'  }) tags;    // defaults to []
@@ -127,18 +128,18 @@ foo.serialize(); // => { tags: ['one'], options: { one: 1 } }
 
 #### belongsTo
 
-Makes a property as referring to another model.  Will attempt to map
-the referenced class based on the name, i.e. a property named `box` will
-look for a class named `Box`.
+Makes a property as referring to another model.  Will map to
+the referenced class based on it's identifiedBy and the property name, i.e. a property named `box` will
+look for a class identified by `box`.
 
 Optionally can be given an option object with a `model` property to control the mapping.
 
-`model` can be either a string which matches a value given to the modelDecorator, or a reference to the model itself.
+`model` can be either a string which matches a value given to the identifiedBy decorator, or a reference to the model itself.
 
 *example:*
 
 ```javascript
-@modelDecorator
+@identifiedBy('person')
 class Person({
     @identifier id;
     @field name;
@@ -149,7 +150,7 @@ class Person({
     }
 })
 
-@modelDecorator('pants')
+@identifiedBy('pants')
 class Pants {
   @session color;
   @belongsTo({ model: Person }) owner; // no lookup, will just use the class `Person`
@@ -195,20 +196,20 @@ also be a function, which will be called and it's return values used.
 Like `belongsTo`, `hasMany` also converts object assignment to a model
 
 ```javascript
-@modelDecorator
+@identifiedBy('tire')
 class Tire {
     @session numberInSet;
     @belongsTo vehicle; // will be autoset by the `inverseOf: auto` on Car
 }
 
-@modelDecorator
+@identifiedBy('car')
 class Car {
     @belongsTo home;
     @session color;
     @hasMany({ model: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
 }
 
-@modelDecorator
+@identifiedBy('garage')
 class Garage {
     @session owner;
     @hasMany({
@@ -223,7 +224,7 @@ class Garage {
 
 ## unresolvedAssociations
 
-mobx-decorated-models attempts to do lazy lookups for the model that **hasMany** and **belongsTo** should use.  In order to do so, it keeps track of associations that are not immediatly resolved in the hope that the model for them will be decorated with **@modelDecorator** later.
+mobx-decorated-models attempts to do lazy lookups for the model that **hasMany** and **belongsTo** should use.  In order to do so, it keeps track of associations that are not immediatly resolved in the hope that the model for them will be decorated with **@identifiedBy** later.
 
 However if the model is never decorated the association will continue to be set to a plain observable.object.
 
@@ -234,12 +235,12 @@ Properties that are not resolved can be listed using the `unresolvedAssociations
 
 import { model, field, session, belongsTo, hasMany, identifier } from 'mobx-decorated-models';
 
-@modelDecorator
+@identifiedBy('shape')
 class Parallelogram {
 
 }
 
-@modelDecorator('box')
+@identifiedBy('box')
 class Box {
     hasMany sides;
 }
