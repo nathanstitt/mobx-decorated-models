@@ -118,8 +118,7 @@ It adds a few convenience methods to classes:
  * an `update` method.  Updates a model's attributes and child associations.
  * `serialize`.  Converts the model's attributes and it's associations to JSON.
 
-However, it's primary purpose is to remember classes for hasMany/belongsTo lookups. See discussion
-above regarding `lookupModelUsing` and `rememberModelUsing`.
+It’s primary purpose is to remember classes for hasMany/belongsTo lookups.  This allows the associations to refer to models without having to load them.  Often models will refer to one another, making it difficult for each of them obtain a direct reference.
 
 ### identifier
 
