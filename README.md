@@ -107,7 +107,7 @@ Note that the "model" objects a collection is set to do not have to be decorated
 
 ## Decorators
 
-### identifiedBy('<identifier>')
+### identifiedBy('identifier')
 
 Marks a class as serializable.
 
