@@ -56,7 +56,7 @@ console.log(box.volume);      // => 48
 console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, items: [] }
 ```
 
-### Controlling model lookups
+## Controlling model lookups
 
 The class `@identifiedBy` accepts a unique string that should be used  as a lookup key so
 that `hasMany` and `belongsTo` relationships can be established.
@@ -84,7 +84,7 @@ class Table {
 }
 ```
 
-### Collections
+## Collections
 
 The same logic that is used for belongsTo can also build a stand-alone collection.  Collections built this way are instances of mobx `observable.array` with an interceptor that converts assigment into model creation.
 
@@ -105,9 +105,9 @@ collection[0].myName(); // will return "bar", since it's coerced into an instanc
 
 Note that the "model" objects a collection is set to do not have to be decorated by the `@identifiedBy` decorator if they're given directly as shown in the exmple above.  However if they were, then the identifier could be given to 'model' instead of the class.
 
-### Decorators
+## Decorators
 
-#### identifiedBy('<identifier>')
+### identifiedBy('<identifier>')
 
 Marks a class as serializable.
 
@@ -121,11 +121,11 @@ It adds a few convenience methods to classes:
 However, it's primary purpose is to remember classes for hasMany/belongsTo lookups. See discussion
 above regarding `lookupModelUsing` and `rememberModelUsing`.
 
-#### identifier
+### identifier
 
 The primary key for the model
 
-#### field
+### field
 
 marks a class property as observable and serializable.
 
@@ -147,7 +147,7 @@ foo.serialize(); // => { tags: ['one'], options: { one: 1 } }
 ```
 
 
-#### belongsTo
+### belongsTo
 
 Makes a property as referring to another model.  Will map to
 the referenced class based on it's identifiedBy and the property name, i.e. a property named `box` will
@@ -200,7 +200,7 @@ pants.owner.speak("Hello World!"); // Jimmy says: Hello World
 
 **Note**: When using `inverseOf`, the auto-set property is not serialized in order to prevent circular references.
 
-#### hasMany
+### hasMany
 
 Marks a property as belonging to an mobx observable array of models.
 
@@ -242,6 +242,30 @@ class Garage {
     }) cars;
 }
 ```
+
+##  Custom serialization
+
+Custom serialize/deserialize behaviour can be implemented by setting the `serialize` option on a decorator.  `serialize` should be an array of two functions.  The first is used to convert from the property to JSON, the second will be used to convert from JSON to the object's property.
+
+```javascript
+const shipCargoSerializer = [
+    a => a - 1,
+    b => b + 3,
+];
+
+@identifiedBy('boat')
+export class Ship {
+    @identifier name;
+
+    @field({ serializer: shipCargoSerializer }) cargoCount;
+}
+
+const boat = Ship.deserialize({ id: 1, cargoCount: 3 });
+boat.cargoCount // 6
+boat.serialize().cargoCount // 5
+```
+
+**Note**: The above example does not deal with null/undefined or perform any validation. Real serization methods must deal with unexpected values.
 
 ## unresolvedAssociations
 

@@ -141,5 +141,10 @@ describe('Property Decorators', () => {
         expect(container.boxes[1].container).toBe(container);
     });
 
+    it('can use a custom serializer', () => {
+        const boat = Ship.deserialize({ id: 1, cargoCount: 3 });
+        expect(boat.cargoCount).toEqual(6);
+        expect(boat.serialize().cargoCount).toEqual(5);
+    });
 
 });

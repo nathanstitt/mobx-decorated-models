@@ -8,9 +8,16 @@ class RectangularCuboid {
     }
 }
 
+const shipCargoSerializer = [
+    a => (a ? a - 1 : a),
+    b => (b ? b + 3 : b),
+];
+
 @identifiedBy('boat')
 export class Ship {
     @identifier name;
+
+    @field({ serializer: shipCargoSerializer }) cargoCount;
 
     @belongsTo({ inverseOf: 'vessel' }) box;
 }
