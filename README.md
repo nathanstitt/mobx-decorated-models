@@ -98,7 +98,7 @@ class Foo {
     myName() { return this.name; }
 }
 
-const collection = createCollection({ model: ModelInCollection });
+const collection = createCollection({ model: Foo });
 collection.push({ name: 'bar' });
 collection[0].myName(); // will return "bar", since it's coerced into an instance of Foo
 ```
