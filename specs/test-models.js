@@ -18,7 +18,7 @@ export class Ship {
     @identifier name;
 
     @field({ serializer: shipCargoSerializer }) cargoCount;
-
+    @field({ type: 'date' }) embarks;
     @belongsTo({ inverseOf: 'vessel' }) box;
 }
 

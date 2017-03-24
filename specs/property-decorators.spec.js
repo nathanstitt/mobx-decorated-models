@@ -58,7 +58,7 @@ describe('Property Decorators', () => {
         expect(isSerializable(ship, 'box')).toBe(true);
         expect(isSerializable(ship.box, 'vessel')).toBe(false);
         expect(ship.serialize()).toEqual({
-            name: 'HMS Mobx',
+            name: 'HMS Mobx', embarks: null,
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
         expect(ship.box.vessel_association_name).toEqual('box');

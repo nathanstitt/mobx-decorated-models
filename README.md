@@ -128,7 +128,7 @@ The primary key for the model
 
 marks a class property as observable and serializable.
 
-The type of field can be set to `array` or `object` by specifying options.
+The type of field can be set to `array` or `object`, or `date` by specifying options.
 
 *example:*
 
@@ -137,12 +137,15 @@ The type of field can be set to `array` or `object` by specifying options.
 class Foo {
   @field({ type: 'object' }) options; // will default to an observable map
   @field({ type: 'array'  }) tags;    // defaults to []
+  @field({ type: 'date'   }) occured; // no default value is set
 }
 
 const foo = new Foo();
+foo.update({ occured: '2013-10-21T13:28:06.419Z' });
+console.log(foo.occured); // Mon Oct 21 2013 08:28:06 GMT-0500 (CDT), provided you're in CDT :)
 foo.tags.push('one');
 foo.options.set('one', 1);
-foo.serialize(); // => { tags: ['one'], options: { one: 1 } }
+foo.serialize(); // => { tags: ['one'], options: { one: 1 }, occured: '2013-10-21T13:28:06.419Z' }
 ```
 
 

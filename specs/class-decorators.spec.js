@@ -17,6 +17,12 @@ describe('Class Decorators', () => {
         });
     });
 
+    it('can serialize/deserialize dates', () => {
+        const ship = Ship.deserialize({ embarks: '2013-10-21T13:28:06.419Z' });
+        expect(ship.embarks).toEqual(new Date('2013-10-21T13:28:06.419Z'));
+        expect(ship.serialize()).toEqual({ embarks: '2013-10-21T13:28:06.419Z' });
+    });
+
     it('can deserialize arrays', () => {
         const json = [
             { id: 1, width: 8, depth: 12, height: 8 },
