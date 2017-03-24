@@ -82,6 +82,12 @@ describe('Class Decorators', () => {
         });
     });
 
+    it('can assign when a model is given for a belongsTo', () => {
+        const box = new Box();
+        const boat = Ship.deserialize({ box });
+        expect(boat.box).toBe(box);
+    });
+
     it('hasMany', () => {
         const container = new Container({ id: 1, name: 'C23', location: 'z1' });
         container.boxes.push(new Box());

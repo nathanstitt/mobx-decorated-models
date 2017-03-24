@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx';
+import { computed } from 'mobx';
 import { identifiedBy, field, session, belongsTo, hasMany, identifier } from '../index';
 
 class RectangularCuboid {
