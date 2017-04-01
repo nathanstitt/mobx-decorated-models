@@ -64,7 +64,7 @@ describe('Property Decorators', () => {
         expect(ship.box.vessel_association_name).toEqual('box');
     });
 
-    it('merges both attributes and session props', () => {
+    it('session props are set but not serialized', () => {
         const box = Box.deserialize({ width: 3, color: 'red' });
         expect(box.color).toEqual('red');
         // no color
