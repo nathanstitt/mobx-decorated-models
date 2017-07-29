@@ -1,6 +1,6 @@
+import { findModel } from '../lib/model-lookup';
 import { Container, Box, Ship } from './test-models';
 import { unresolvedAssociations } from '../lib/class-decorator';
-import { findModel } from '../lib/model-lookup';
 
 describe('Class Decorators', () => {
     it('adds static deserialize method and serialize to prototype', () => {
@@ -21,7 +21,7 @@ describe('Class Decorators', () => {
         const ship = Ship.deserialize({ embarks: '2013-10-21T13:28:06.419Z' });
         expect(ship.embarks).toBeInstanceOf(Date);
         expect(ship.embarks).toEqual(new Date('2013-10-21T13:28:06.419Z'));
-        expect(ship.serialize()).toEqual({ embarks: '2013-10-21T13:28:06.419Z' });
+        expect(ship.serialize()).toMatchObject({ embarks: '2013-10-21T13:28:06.419Z' });
     });
 
     it('can deserialize arrays', () => {
@@ -37,7 +37,7 @@ describe('Class Decorators', () => {
         expect(boxes[2].id).toEqual(3);
     });
 
-    fit('can serialize/deserialize nested objects', () => {
+    it('can serialize/deserialize nested objects', () => {
         const box = new Box();
         box.update({
             metadata: {

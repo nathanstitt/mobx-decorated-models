@@ -1,9 +1,8 @@
 import { autorun } from 'mobx';
-import { Box, Container, Ship } from './test-models';
+import { Box, Container, Ship, Registration } from './test-models';
 import { isSerializable } from '../lib/serializable';
 
 describe('Property Decorators', () => {
-
     it('it doesn’t interfere with inheritance', () => {
         const container = new Container();
         expect(container.isCuboid).toEqual(true);
@@ -58,7 +57,7 @@ describe('Property Decorators', () => {
         expect(isSerializable(ship, 'box')).toBe(true);
         expect(isSerializable(ship.box, 'vessel')).toBe(false);
         expect(ship.serialize()).toEqual({
-            name: 'HMS Mobx', embarks: null,
+            name: 'HMS Mobx', embarks: null, registration: '',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
         expect(ship.box.vessel_association_name).toEqual('box');
@@ -118,7 +117,7 @@ describe('Property Decorators', () => {
         ship.box = undefined;
         expect(ship.box).toBeUndefined();
         ship.box = 1;
-        expect(ship.box).toBe(1);
+        expect(ship.box).toBeInstanceOf(Box);
         const container = new Container();
         container.boxes = [{ id: 1 }];
         expect(container.boxes[0]).toBeInstanceOf(Box);
@@ -127,6 +126,10 @@ describe('Property Decorators', () => {
         container.boxes = [{ id: 1 }, null];
         expect(container.boxes[0].id).toBe(1);
         expect(container.boxes[1]).toBeNull();
+        const box = new Box({ vessel: 'myboat' });
+        expect(box.vessel).toEqual('myboat');
+        box.vessel = '1234';
+        expect(box.vessel).toEqual('1234');
     });
 
     it('guards against setting a hasMany', () => {
@@ -147,4 +150,10 @@ describe('Property Decorators', () => {
         expect(boat.serialize().cargoCount).toEqual(5);
     });
 
+    it('can use a model to typecast', () => {
+        const boat = Ship.deserialize({ id: 1, cargoCount: 3 });
+        boat.registration = '8550W';
+        expect(boat.registration).toBeInstanceOf(Registration);
+        expect(boat.serialize()).toMatchObject({ registration: '8550W' });
+    });
 });

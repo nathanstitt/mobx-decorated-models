@@ -13,9 +13,20 @@ const shipCargoSerializer = [
     b => (b ? b + 3 : b),
 ];
 
+@identifiedBy('registration')
+export class Registration {
+    constructor(id) {
+        this.id = id;
+    }
+    static serialize(reg) {
+        return reg ? reg.id : '';
+    }
+}
+
 @identifiedBy('boat')
 export class Ship {
     @identifier name;
+    @field({ model: 'registration' }) registration;
 
     @field({ serializer: shipCargoSerializer }) cargoCount;
     @field({ type: 'date' }) embarks;

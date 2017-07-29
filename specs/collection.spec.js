@@ -7,7 +7,6 @@ class ModelInCollection {
 }
 
 describe('Collections', () => {
-
     it('it forces assignment into models', () => {
         const collection = createCollection({ model: ModelInCollection });
         collection.push({ foo: 'bar' });
