@@ -57,7 +57,9 @@ describe('Property Decorators', () => {
         expect(isSerializable(ship, 'box')).toBe(true);
         expect(isSerializable(ship.box, 'vessel')).toBe(false);
         expect(ship.serialize()).toEqual({
-            name: 'HMS Mobx', embarks: null, registration: '',
+            name: 'HMS Mobx',
+            embarks: null,
+            registration: '',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
         expect(ship.box.vessel_association_name).toEqual('box');
@@ -90,7 +92,11 @@ describe('Property Decorators', () => {
         });
         expect(box.metadata).toEqual({ barcode: 'Z12', color: 'black' });
         expect(box.serialize()).toEqual({
-            container: undefined, depth: 1, height: 1, id: undefined, width: 3,
+            container: undefined,
+            depth: 1,
+            height: 1,
+            id: undefined,
+            width: 3,
             metadata: { barcode: 'Z12', color: 'black' },
         });
     });

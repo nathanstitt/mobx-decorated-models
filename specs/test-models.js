@@ -76,6 +76,6 @@ export class Container extends RectangularCuboid {
     }) boxes;
 
     @computed get areaInUse() {
-        return this.boxes.reduce((acc, box) => (acc += box.volume), 0);
+        return this.boxes.reduce((acc, box) => (acc + box.volume), 0);
     }
 }

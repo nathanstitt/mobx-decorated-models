@@ -13,7 +13,7 @@ describe('Model Lookups', () => {
         const spy = jest.fn().mockReturnValue(Box);
         ModelLookup.lookupModelUsing(spy);
         expect(ModelLookup.findModel('container')).toEqual(Box);
-        expect(spy).toHaveBeenCalledWith({"model": "container", "property": undefined});
+        expect(spy).toHaveBeenCalledWith({ model: 'container', property: undefined });
     });
 
     it('is notified when class is decorated', () => {

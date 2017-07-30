@@ -1,5 +1,5 @@
 import { computed } from 'mobx';
-import { identifiedBy, field, session, belongsTo, hasMany, identifier } from '../index';
+import { identifiedBy, field, identifier } from '../index';
 
 @identifiedBy('mocked-boat')
 export default class MockedBoat {

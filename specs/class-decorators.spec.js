@@ -4,13 +4,20 @@ import { unresolvedAssociations } from '../lib/class-decorator';
 
 describe('Class Decorators', () => {
     it('adds static deserialize method and serialize to prototype', () => {
-        const attrs = { id: 42, name: 'TV1', location: 'mid-ship', tags: [], boxes: [
-            { id: 1, width: 8, depth: 12, height: 8 },
-        ] };
+        const attrs = { id: 42,
+            name: 'TV1',
+            location: 'mid-ship',
+            tags: [],
+            boxes: [
+                { id: 1, width: 8, depth: 12, height: 8 },
+            ] };
         const container = Container.deserialize(attrs);
         expect(container.boxes).toHaveLength(1);
         expect(container.serialize()).toEqual({
-            id: 42, location: 'mid-ship', name: 'TV1', tags: [],
+            id: 42,
+            location: 'mid-ship',
+            name: 'TV1',
+            tags: [],
             boxes: [
                 { container: undefined, depth: 12, height: 8, id: 1, metadata: {}, width: 8 },
             ],
@@ -58,14 +65,22 @@ describe('Class Decorators', () => {
     });
 
     it('adds update method to prototype', () => {
-        const attrs = { id: 2, width: 3, depth: 12, height: 4, container: {
-            id: 1, name: '#12', location: 'Building #1',
-        } };
+        const attrs = { id: 2,
+            width: 3,
+            depth: 12,
+            height: 4,
+            container: {
+                id: 1, name: '#12', location: 'Building #1',
+            } };
         const box = new Box();
         box.update(attrs);
         expect(box.serialize()).toEqual({
             container: { boxes: [], id: 1, location: 'Building #1', name: '#12', tags: [] },
-            depth: 12, height: 4, id: 2, metadata: {}, width: 3,
+            depth: 12,
+            height: 4,
+            id: 2,
+            metadata: {},
+            width: 3,
         });
     });
 
@@ -76,10 +91,17 @@ describe('Class Decorators', () => {
         expect(box.container).toBeInstanceOf(Container);
         expect(box.serialize()).toEqual({
             container: {
-                id: 1, boxes: [], tags: [],
-                location: 'Building #1', name: '#12',
+                id: 1,
+                boxes: [],
+                tags: [],
+                location: 'Building #1',
+                name: '#12',
             },
-            depth: 12, height: 4, id: 32, metadata: {}, width: 3,
+            depth: 12,
+            height: 4,
+            id: 32,
+            metadata: {},
+            width: 3,
         });
     });
 
@@ -97,7 +119,10 @@ describe('Class Decorators', () => {
         // hasMany sets the inverseOf, but it isn't serialized
         expect(container.boxes[0].container).toBe(container);
         expect(container.serialize()).toEqual({
-            id: 1, location: 'z1', name: 'C23', tags: [],
+            id: 1,
+            location: 'z1',
+            name: 'C23',
+            tags: [],
             boxes: [
                 { depth: 1, height: 1, metadata: {}, width: 1 },
                 { depth: 1, height: 1, metadata: {}, width: 4 },
@@ -107,7 +132,7 @@ describe('Class Decorators', () => {
 
     it('sets identifier from decorator', () => {
         expect(Ship.identifiedBy).toEqual('boat');
-        expect(() => (Ship.identifiedBy = 'bar')).toThrow();
+        expect(() => { Ship.identifiedBy = 'bar'; }).toThrow();
         expect(findModel('ship', 'boat')).toBe(Ship);
     });
 
