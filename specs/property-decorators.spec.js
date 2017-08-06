@@ -39,11 +39,9 @@ describe('Property Decorators', () => {
     });
 
     it('sets an inverse for hasMany', () => {
-        const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
-        container.boxes.push({});
-        expect(container.boxes[0]).toBeInstanceOf(Box);
-        expect(container.boxes[0].container_association_name).toBeUndefined();
-        const ship = Ship.deserialize({ box: { width: 10, height: 10, depth: 10 } });
+        const attrs = { box: { width: 10, height: 10, depth: 10 } };
+        Object.preventExtensions(attrs);
+        const ship = Ship.deserialize(attrs);
         expect(ship.box).toBeInstanceOf(Box);
         expect(ship.box.vessel).toBe(ship);
         expect(ship.box.vessel_association_name).toBe('box');
