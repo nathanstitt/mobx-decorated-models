@@ -142,10 +142,10 @@ describe('Property Decorators', () => {
     it('guards against setting a hasMany', () => {
         const container = Container.deserialize({ id: 1 });
         const originalBoxes = container.boxes;
-        container.boxes = [
+        container.boxes = Object.freeze([
             { width: 1, height: 1, depth: 1 },
             { width: 2, height: 2, depth: 2 },
-        ];
+        ]);
         expect(container.boxes).toBe(originalBoxes);
         expect(container.boxes[0]).toBeInstanceOf(Box);
         expect(container.boxes[1].container).toBe(container);
