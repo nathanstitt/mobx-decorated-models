@@ -42,8 +42,11 @@ describe('Property Decorators', () => {
         const container = Container.deserialize({ id: 1, name: 'Bob', location: 'water' });
         container.boxes.push({});
         expect(container.boxes[0]).toBeInstanceOf(Box);
-        expect(container.boxes[0].container).toBe(container);
-        expect(container.boxes[0].container_association_name).toEqual('boxes');
+        expect(container.boxes[0].container_association_name).toBeUndefined();
+        const ship = Ship.deserialize({ box: { width: 10, height: 10, depth: 10 } });
+        expect(ship.box).toBeInstanceOf(Box);
+        expect(ship.box.vessel).toBe(ship);
+        expect(ship.box.vessel_association_name).toBe('box');
     });
 
     it('finds model for belongsTo', () => {
@@ -161,5 +164,20 @@ describe('Property Decorators', () => {
         boat.registration = '8550W';
         expect(boat.registration).toBeInstanceOf(Registration);
         expect(boat.serialize()).toMatchObject({ registration: '8550W' });
+    });
+
+    it('keeps hasMany associations interceptors', () => {
+        const container = Container.deserialize({ id: 1, color: 'red' });
+        expect(container.boxes).toHaveLength(0);
+        container.update({ boxes: [{ width: 12, height: 12, depth: 12 }] });
+        expect(container.boxes).toHaveLength(1);
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        expect(container.boxes[0].color).toEqual('red');
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        container.boxes = [];
+        container.boxes.push({ width: 10, height: 10, depth: 10 });
+        expect(container.boxes).toHaveLength(1);
+        expect(container.boxes[0]).toBeInstanceOf(Box);
+        expect(container.boxes[0].volume).toBe(1000);
     });
 });

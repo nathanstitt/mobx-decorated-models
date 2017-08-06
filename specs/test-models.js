@@ -1,4 +1,4 @@
-import { computed } from 'mobx';
+import { observable, computed } from 'mobx';
 import { identifiedBy, field, session, belongsTo, hasMany, identifier } from '../index';
 
 class RectangularCuboid {
@@ -49,6 +49,7 @@ export class Box extends RectangularCuboid {
         return this.width * this.height * this.depth;
     }
     @belongsTo vessel;
+    @observable vessel_association_name;
     @belongsTo({ model: 'boat' }) watercraft;
     @belongsTo container;
 }
