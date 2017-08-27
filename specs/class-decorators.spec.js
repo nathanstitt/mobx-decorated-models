@@ -111,6 +111,18 @@ describe('Class Decorators', () => {
         expect(boat.box).toBe(box);
     });
 
+    it('only builds a single class for belongsTo', () => {
+        const box = new Box();
+        Ship.buildSpy = jest.fn();
+        box.update({
+            watercraft: {
+                name: 'test1234',
+            },
+        });
+        expect(box.watercraft).toBeInstanceOf(Ship);
+        expect(Ship.buildSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('hasMany', () => {
         const container = new Container({ id: 1, name: 'C23', location: 'z1' });
         container.boxes.push(new Box());

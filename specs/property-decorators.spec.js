@@ -63,6 +63,7 @@ describe('Property Decorators', () => {
             registration: '',
             box: { depth: 1, height: 1, metadata: {}, width: 42 },
         });
+        expect(ship.box.vessel).toBe(ship);
         expect(ship.box.vessel_association_name).toEqual('box');
     });
 
