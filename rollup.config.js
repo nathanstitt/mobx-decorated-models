@@ -3,14 +3,21 @@ import babelrc from 'babelrc-rollup';
 
 const pkg = require('./package.json');
 
-const external = Object.keys(pkg.dependencies);
+
 
 export default {
     entry: 'index.js',
     plugins: [
         babel(babelrc()),
     ],
-    external,
+    external: [
+        'serializr',
+        'mobx',
+    ],
+    globals: {
+        serializr: 'serializr',
+        mobx: 'mobx',
+    },
     targets: [
         {
             dest: pkg.main,
