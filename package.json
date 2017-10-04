@@ -27,13 +27,14 @@
   },
   "devDependencies": {
     "babel": "^6.5.2",
-    "babelrc-rollup": "^3.0.0",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.22.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
     "eslint": "^4.3.0",
@@ -44,5 +45,6 @@
     "rollup": "^0.43.0",
     "rollup-plugin-babel": "^2.7.1",
     "serializr": "^1.1"
-  }
+  },
+  "dependencies": {}
 }

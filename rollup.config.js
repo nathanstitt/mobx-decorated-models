@@ -1,14 +1,21 @@
 import babel from 'rollup-plugin-babel';
-import babelrc from 'babelrc-rollup';
-
 const pkg = require('./package.json');
-
-
 
 export default {
     entry: 'index.js',
     plugins: [
-        babel(babelrc()),
+        babel({
+            babelrc: false,
+            runtimeHelpers: true,
+            exclude: 'node_modules/**',
+
+            plugins: [
+                'transform-decorators-legacy',
+                'transform-class-properties',
+                'external-helpers',
+                'transform-runtime',
+            ],
+        }),
     ],
     external: [
         'serializr',

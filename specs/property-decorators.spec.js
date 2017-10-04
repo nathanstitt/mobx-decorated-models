@@ -159,10 +159,17 @@ describe('Property Decorators', () => {
     });
 
     it('can use a model to typecast', () => {
-        const boat = Ship.deserialize({ id: 1, cargoCount: 3 });
+        const boat = Ship.deserialize({ name: 'Boaty', cargoCount: 3 });
         boat.registration = '8550W';
         expect(boat.registration).toBeInstanceOf(Registration);
         expect(boat.serialize()).toMatchObject({ registration: '8550W' });
+        expect(boat.name).toEqual('Boaty');
+
+        const customBoat = Ship.deserialize({
+            registration: [1, 2, 3],
+        });
+        expect(customBoat.registration).toBeInstanceOf(Registration);
+        expect(customBoat.registration.id).toEqual([1, 2, 3]);
     });
 
     it('keeps hasMany associations interceptors', () => {
