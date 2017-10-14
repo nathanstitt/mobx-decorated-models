@@ -1,6 +1,6 @@
 {
   "name": "mobx-decorated-models",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Decorators to make using Mobx for model type structures easier",
   "main": "dist/build.full.js",
   "module": "dist/build.module.js",
