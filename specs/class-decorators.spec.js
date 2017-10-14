@@ -13,15 +13,7 @@ describe('Class Decorators', () => {
             ] };
         const container = Container.deserialize(attrs);
         expect(container.boxes).toHaveLength(1);
-        expect(container.serialize()).toEqual({
-            id: 42,
-            location: 'mid-ship',
-            name: 'TV1',
-            tags: [],
-            boxes: [
-                { container: undefined, depth: 12, height: 8, id: 1, metadata: {}, width: 8 },
-            ],
-        });
+        expect(container.serialize()).toMatchSnapshot();
     });
 
     it('can serialize/deserialize dates', () => {
@@ -74,14 +66,7 @@ describe('Class Decorators', () => {
             } };
         const box = new Box();
         box.update(attrs);
-        expect(box.serialize()).toEqual({
-            container: { boxes: [], id: 1, location: 'Building #1', name: '#12', tags: [] },
-            depth: 12,
-            height: 4,
-            id: 2,
-            metadata: {},
-            width: 3,
-        });
+        expect(box.serialize()).toMatchSnapshot();
     });
 
     it('works with belongsTo', () => {
@@ -89,20 +74,7 @@ describe('Class Decorators', () => {
         const container = { id: 1, name: '#12', location: 'Building #1' };
         box.update({ id: 32, width: 3, depth: 12, height: 4, container });
         expect(box.container).toBeInstanceOf(Container);
-        expect(box.serialize()).toEqual({
-            container: {
-                id: 1,
-                boxes: [],
-                tags: [],
-                location: 'Building #1',
-                name: '#12',
-            },
-            depth: 12,
-            height: 4,
-            id: 32,
-            metadata: {},
-            width: 3,
-        });
+        expect(box.serialize()).toMatchSnapshot();
     });
 
     it('can assign when a model is given for a belongsTo', () => {
@@ -130,16 +102,7 @@ describe('Class Decorators', () => {
         container.boxes[1].width = 4;
         // hasMany sets the inverseOf, but it isn't serialized
         expect(container.boxes[0].container).toBe(container);
-        expect(container.serialize()).toEqual({
-            id: 1,
-            location: 'z1',
-            name: 'C23',
-            tags: [],
-            boxes: [
-                { depth: 1, height: 1, metadata: {}, width: 1 },
-                { depth: 1, height: 1, metadata: {}, width: 4 },
-            ],
-        });
+        expect(container.serialize()).toMatchSnapshot();
     });
 
     it('sets identifier from decorator', () => {

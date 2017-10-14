@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Class Decorators adds static deserialize method and serialize to prototype 1`] = `
+Object {
+  "boxes": Array [
+    Object {
+      "depth": 12,
+      "height": 8,
+      "id": 1,
+      "metadata": Object {},
+      "sides": Array [],
+      "vessel": undefined,
+      "watercraft": undefined,
+      "width": 8,
+    },
+  ],
+  "id": 42,
+  "location": "mid-ship",
+  "name": "TV1",
+  "tags": Array [],
+}
+`;
+
+exports[`Class Decorators adds update method to prototype 1`] = `
+Object {
+  "container": Object {
+    "boxes": Array [],
+    "id": 1,
+    "location": "Building #1",
+    "name": "#12",
+    "tags": Array [],
+  },
+  "depth": 12,
+  "height": 4,
+  "id": 2,
+  "metadata": Object {},
+  "sides": Array [],
+  "vessel": undefined,
+  "watercraft": undefined,
+  "width": 3,
+}
+`;
+
+exports[`Class Decorators hasMany 1`] = `
+Object {
+  "boxes": Array [
+    Object {
+      "depth": 1,
+      "height": 1,
+      "id": undefined,
+      "metadata": Object {},
+      "sides": Array [],
+      "vessel": undefined,
+      "watercraft": undefined,
+      "width": 1,
+    },
+    Object {
+      "depth": 1,
+      "height": 1,
+      "id": undefined,
+      "metadata": Object {},
+      "sides": Array [],
+      "vessel": undefined,
+      "watercraft": undefined,
+      "width": 4,
+    },
+  ],
+  "id": 1,
+  "location": "z1",
+  "name": "C23",
+  "tags": Array [],
+}
+`;
+
+exports[`Class Decorators works with belongsTo 1`] = `
+Object {
+  "container": Object {
+    "boxes": Array [],
+    "id": 1,
+    "location": "Building #1",
+    "name": "#12",
+    "tags": Array [],
+  },
+  "depth": 12,
+  "height": 4,
+  "id": 32,
+  "metadata": Object {},
+  "sides": Array [],
+  "vessel": undefined,
+  "watercraft": undefined,
+  "width": 3,
+}
+`;

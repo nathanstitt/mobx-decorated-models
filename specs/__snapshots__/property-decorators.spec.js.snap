@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Property Decorators can set property to be object 1`] = `
+Object {
+  "container": undefined,
+  "depth": 1,
+  "height": 1,
+  "id": undefined,
+  "metadata": Object {
+    "barcode": "Z12",
+    "color": "black",
+  },
+  "sides": Array [],
+  "vessel": undefined,
+  "watercraft": undefined,
+  "width": 3,
+}
+`;
+
+exports[`Property Decorators session props are set but not serialized 1`] = `
+Object {
+  "container": undefined,
+  "depth": 1,
+  "height": 1,
+  "id": undefined,
+  "metadata": Object {},
+  "sides": Array [],
+  "vessel": undefined,
+  "watercraft": undefined,
+  "width": 3,
+}
+`;
+
+exports[`Property Decorators sets an inverse for belongsTo 1`] = `
+Object {
+  "box": Object {
+    "container": undefined,
+    "depth": 1,
+    "height": 1,
+    "id": undefined,
+    "metadata": Object {},
+    "sides": Array [],
+    "watercraft": undefined,
+    "width": 42,
+  },
+  "cargoCount": undefined,
+  "embarks": null,
+  "name": "HMS Mobx",
+  "registration": "",
+}
+`;

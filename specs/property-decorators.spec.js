@@ -47,6 +47,14 @@ describe('Property Decorators', () => {
         expect(ship.box.vessel_association_name).toBe('box');
     });
 
+    it('can extend hasMany', () => {
+        const container = Container.deserialize({ color: 'blue' });
+        container.boxes.push({ id: 42 });
+        expect(container.boxes.identifiers()).toEqual([42]);
+        container.boxes[0].sides.push({});
+        expect(container.boxes[0].sides.volume).toEqual(2);
+    });
+
     it('finds model for belongsTo', () => {
         const box = Box.deserialize({ id: 1, watercraft: { name: 'Boaty' } });
         expect(box.watercraft).toBeInstanceOf(Ship);
@@ -57,12 +65,7 @@ describe('Property Decorators', () => {
         expect(ship.box.depth).toEqual(1);
         expect(isSerializable(ship, 'box')).toBe(true);
         expect(isSerializable(ship.box, 'vessel')).toBe(false);
-        expect(ship.serialize()).toEqual({
-            name: 'HMS Mobx',
-            embarks: null,
-            registration: '',
-            box: { depth: 1, height: 1, metadata: {}, width: 42 },
-        });
+        expect(ship.serialize()).toMatchSnapshot();
         expect(ship.box.vessel).toBe(ship);
         expect(ship.box.vessel_association_name).toEqual('box');
     });
@@ -70,8 +73,8 @@ describe('Property Decorators', () => {
     it('session props are set but not serialized', () => {
         const box = Box.deserialize({ width: 3, color: 'red' });
         expect(box.color).toEqual('red');
-        // no color
-        expect(box.serialize()).toEqual({ depth: 1, height: 1, metadata: {}, width: 3 });
+        expect(box.serialize()).not.toHaveProperty('color');
+        expect(box.serialize()).toMatchSnapshot();
     });
 
     it('can observe associations', () => {
@@ -93,14 +96,7 @@ describe('Property Decorators', () => {
             width: 3, metadata: { barcode: 'Z12', color: 'black' },
         });
         expect(box.metadata).toEqual({ barcode: 'Z12', color: 'black' });
-        expect(box.serialize()).toEqual({
-            container: undefined,
-            depth: 1,
-            height: 1,
-            id: undefined,
-            width: 3,
-            metadata: { barcode: 'Z12', color: 'black' },
-        });
+        expect(box.serialize()).toMatchSnapshot();
     });
 
     it('can set property to be array', () => {
