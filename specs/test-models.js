@@ -37,6 +37,15 @@ export class Ship {
     }
 }
 
+@identifiedBy('dimension')
+export class Dimension {
+
+    constructor(attrs) {
+        Object.assign(this, attrs);
+    }
+
+}
+
 @identifiedBy('box')
 export class Box extends RectangularCuboid {
     @identifier id;
@@ -56,7 +65,23 @@ export class Box extends RectangularCuboid {
     @observable vessel_association_name;
     @belongsTo({ model: 'boat' }) watercraft;
     @belongsTo container;
+
+    @hasMany({
+        model: Dimension,
+        extend: (array) => {
+            Object.defineProperty(array, 'volume', {
+                get() { return this.length * 2; },
+            });
+        },
+    }) sides;
+
 }
+
+const BoxExtensions = {
+    identifiers() {
+        return this.map(b => b.id);
+    },
+};
 
 @identifiedBy('container')
 export class Container extends RectangularCuboid {
@@ -78,6 +103,7 @@ export class Container extends RectangularCuboid {
         defaults() {
             return { color: this.color };
         },
+        extend: BoxExtensions,
     }) boxes;
 
     @computed get areaInUse() {

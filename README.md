@@ -86,7 +86,7 @@ class Table {
 
 ## Collections
 
-The same logic that is used for belongsTo can also build a stand-alone collection.  Collections built this way are instances of mobx `observable.array` with an interceptor that converts assigment into model creation.
+The same logic that is used for hasMany can also build a stand-alone collection.  Collections built this way are instances of mobx `observable.array` with an interceptor that converts assigment into model creation.
 
 A collecton can be created like so:
 
@@ -244,20 +244,29 @@ when a model is added to the array, it will have the property named by `inverseO
 If `defaults` are provided the new model's attributes will be defaulted to them.  `defaults` may
 also be a function, which will be called and it's return values used.
 
+An `extend` property can be provided.  If `extend` is a function it will called with the collection whenever one is created.  If `extend` is an object, it's properties will be copied onto the collection.
+
 Like `belongsTo`, `hasMany` also converts object assignment to a model
 
 ```javascript
 @identifiedBy('tire')
 class Tire {
-    @session numberInSet;
+    @session radius;
     @belongsTo vehicle; // will be autoset by the `inverseOf: auto` on Car
 }
+
+// will be mixed into Car's tires assocation, so one could call: car.tires.areEqualSize()
+const TireHelpers = {
+    areEqualSize() {
+        return this.every(t => t.radius === this[0]);
+    }
+};
 
 @identifiedBy('car')
 class Car {
     @belongsTo home;
     @session color;
-    @hasMany({ model: 'Tire', inverseOf: 'vehicle', defaults: {numberInSet: 4} }) tires;
+    @hasMany({ model: 'Tire', inverseOf: 'vehicle', defaults: {radius: 17}, extend: TireHelpers }) tires;
 }
 
 @identifiedBy('garage')
