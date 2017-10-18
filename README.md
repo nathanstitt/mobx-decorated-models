@@ -1,25 +1,22 @@
-# Decorators for creating model type structures with mobx
+# Decorators for creating model relationships with mobx
 
-mobx-decorated-models is a collection of es7 decorators to make a class observable and serializable.
+mobx-decorated-models is a collection of Javascript decorators to make a classes and their relationships observable and serializable.
 
 [![Build Status](https://travis-ci.org/nathanstitt/mobx-decorated-models.svg?branch=master)](https://travis-ci.org/nathanstitt/mobx-decorated-models)
 
 ## Introduction
 
-[Mobx](https://mobx.js.org) makes state management super simple, but it doesn't offer an
-opinion on how to get data in and out of the observed data structures.
+This library is a collection of decorators that co-ordinates making
+models relate to each other and their fields both observable and serializable.
+
+It's built on top of two awesome libraries:
+
+[Mobx](https://mobx.js.org) makes state management super simple, but it doesn't offer an opinion on how to get data in and out of the observed data structures.
 
 [Serializr](https://github.com/mobxjs/serializr) takes care of that nicely.
 
-Combining the two libraries isn’t difficult, but then you end up specifing each attribute twice;
-once so Mobx will observe it, and once to create a schema for Serializr.
+Combining the two libraries isn’t difficult, but then you end up specifing each attribute twice; once so Mobx will observe it, and once to create a schema for Serializr.  Enter mobx-decorated-models.
 
-This library is a collection of decorators that co-ordinates making
-fields both observable and serializable.
-
-While it’s at it, it also handles model lookups so different models can refer
-to one another regardless of import order. When one model refers to another, a
-reference of the requirement is stored and then later resolved when the class becomes known.
 
 ## Example
 
@@ -32,6 +29,7 @@ export class Box {
     @field width  = 0;
     @field height = 0;
     @field depth  = 0;
+    @session tmpContents = 'a bunch of things'
 
     @computed get volume() {
         return this.width * this.height * this.depth;
@@ -53,7 +51,7 @@ fetch('/my/api/endpoints/boxes/1.json').then(function(response) {
 
 const box = Box.deserialize({ id: 1, width: 2, height: 3, depth: 8 }); // returns an instance of Box
 console.log(box.volume);      // => 48
-console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, items: [] }
+console.log(box.serialize()); // => { id: 1, width: 2, height: 3, depth: 8, items: [] };  note `tmpContents` isn't serialized
 ```
 
 ## Controlling model lookups
