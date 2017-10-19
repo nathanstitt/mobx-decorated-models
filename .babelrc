@@ -17,8 +17,13 @@
                 "transform-decorators-legacy",
                 "transform-class-properties"
             ],
-            "presets": ["es2015", "stage-2"]
+            "presets": [
+                ["env", {
+                    "targets": {
+                        "node": "current"
+                    }
+                }]
+            ]
         }
     }
-
 }
