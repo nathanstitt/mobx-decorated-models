@@ -26,7 +26,9 @@ describe('Property Decorators', () => {
 
     it('sets attributes using provided values', () => {
         const box = new Box();
-        box.update({ width: 3, depth: 12, height: 2, bad: true });
+        box.update({
+            width: 3, depth: 12, height: 2, bad: true,
+        });
         expect(box.width).toEqual(3);
         expect(box.bad).toBeUndefined();
         expect(box.volume).toEqual(72);
@@ -84,8 +86,12 @@ describe('Property Decorators', () => {
             spy(container.boxes.length);
         });
         expect(container.areaInUse).toEqual(0);
-        container.boxes.push({ id: 1, width: 8, depth: 12, height: 8 });
-        container.boxes.push({ id: 2, width: 3, depth: 12, height: 4 });
+        container.boxes.push({
+            id: 1, width: 8, depth: 12, height: 8,
+        });
+        container.boxes.push({
+            id: 2, width: 3, depth: 12, height: 4,
+        });
         container.boxes[1].width = 4;
         expect(container.areaInUse).toEqual(960);
         expect(spy).toHaveBeenCalledTimes(3);

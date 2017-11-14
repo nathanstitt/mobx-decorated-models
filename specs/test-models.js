@@ -15,19 +15,22 @@ const shipCargoSerializer = [
 
 @identifiedBy('registration')
 export class Registration {
+
     constructor(id) {
         this.id = id;
     }
     static serialize(reg) {
         return reg ? reg.id : '';
     }
+
 }
 
 @identifiedBy('boat')
 export class Ship {
+
     @identifier name;
     @field({ model: 'registration' }) registration;
-
+    @field({ type: 'radio' }) radio;
     @field({ serializer: shipCargoSerializer }) cargoCount;
     @field({ type: 'date' }) embarks;
     @belongsTo({ inverseOf: 'vessel' }) box;
@@ -35,6 +38,7 @@ export class Ship {
     constructor(attrs) {
         if (this.constructor.buildSpy) { this.constructor.buildSpy(attrs); }
     }
+
 }
 
 @identifiedBy('dimension')
@@ -48,6 +52,7 @@ export class Dimension {
 
 @identifiedBy('box')
 export class Box extends RectangularCuboid {
+
     @identifier id;
 
     @field width  = 1;
@@ -85,6 +90,7 @@ const BoxExtensions = {
 
 @identifiedBy('container')
 export class Container extends RectangularCuboid {
+
     @identifier id;
 
     @field name;
@@ -109,4 +115,5 @@ export class Container extends RectangularCuboid {
     @computed get areaInUse() {
         return this.boxes.reduce((acc, box) => (acc + box.volume), 0);
     }
+
 }

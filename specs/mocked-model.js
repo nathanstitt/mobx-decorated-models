@@ -3,6 +3,7 @@ import { identifiedBy, field, identifier } from '../index';
 
 @identifiedBy('mocked-boat')
 export default class MockedBoat {
+
     @identifier name;
 
     @field cargoCount;
@@ -15,4 +16,5 @@ export default class MockedBoat {
     test() {
         return 'not-mocked';
     }
+
 }

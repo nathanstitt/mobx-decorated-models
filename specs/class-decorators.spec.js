@@ -4,13 +4,17 @@ import { unresolvedAssociations } from '../lib/class-decorator';
 
 describe('Class Decorators', () => {
     it('adds static deserialize method and serialize to prototype', () => {
-        const attrs = { id: 42,
+        const attrs = {
+            id: 42,
             name: 'TV1',
             location: 'mid-ship',
             tags: [],
             boxes: [
-                { id: 1, width: 8, depth: 12, height: 8 },
-            ] };
+                {
+                    id: 1, width: 8, depth: 12, height: 8,
+                },
+            ],
+        };
         const container = Container.deserialize(attrs);
         expect(container.boxes).toHaveLength(1);
         expect(container.serialize()).toMatchSnapshot();
@@ -57,13 +61,13 @@ describe('Class Decorators', () => {
     });
 
     it('adds update method to prototype', () => {
-        const attrs = { id: 2,
+        const attrs = {
+            id: 2,
             width: 3,
             depth: 12,
             height: 4,
-            container: {
-                id: 1, name: '#12', location: 'Building #1',
-            } };
+            container: { id: 1, name: '#12', location: 'Building #1' },
+        };
         const box = new Box();
         box.update(attrs);
         expect(box.serialize()).toMatchSnapshot();
@@ -72,7 +76,9 @@ describe('Class Decorators', () => {
     it('works with belongsTo', () => {
         const box = new Box();
         const container = { id: 1, name: '#12', location: 'Building #1' };
-        box.update({ id: 32, width: 3, depth: 12, height: 4, container });
+        box.update({
+            id: 32, width: 3, depth: 12, height: 4, container,
+        });
         expect(box.container).toBeInstanceOf(Container);
         expect(box.serialize()).toMatchSnapshot();
     });

@@ -3,7 +3,9 @@ import createCollection from '../lib/collection';
 
 @identifiedBy('colTest')
 class ModelInCollection {
+
     constructor(attrs) { Object.assign(this, attrs); }
+
 }
 
 describe('Collections', () => {
