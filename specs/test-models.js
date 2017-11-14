@@ -1,12 +1,31 @@
 import { observable, computed } from 'mobx';
-import { identifiedBy, field, session, belongsTo, hasMany, identifier } from '../index';
+import {
+    identifiedBy, field, session, belongsTo, hasMany, identifier, registerCustomType,
+} from '../index';
 
 class RectangularCuboid {
+
     constructor(attrs) {
         Object.assign(this, attrs);
         this.isCuboid = true;
     }
+
 }
+
+export class Radio {
+
+    constructor(frequency) {
+        this.frequency = frequency;
+    }
+    static serialize(radio) {
+        return radio ? radio.frequency : null;
+    }
+    static deserialize(frequency) {
+        return new Radio(frequency);
+    }
+
+}
+registerCustomType({ id: 'radio', serializer: Radio });
 
 const shipCargoSerializer = [
     a => (a ? a - 1 : a),

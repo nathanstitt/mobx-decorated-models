@@ -126,7 +126,7 @@ The primary key for the model
 
 marks a class property as observable and serializable.
 
-The type of field can be set to `array` or `object`, or `date` by specifying options.  For other types, a `model` option can also be given
+The type of field can be set to `array` or `object`, or `date` by specifying options.  For other types, a `model` option can be given or a custom serialization type used.
 
 *example:*
 @identifiedBy('bar')
@@ -282,27 +282,39 @@ class Garage {
 
 ##  Custom serialization
 
-Custom serialize/deserialize behaviour can be implemented by setting the `serialize` option on a decorator.  `serialize` should be an array of two functions.  The first is used to convert from the property to JSON, the second will be used to convert from JSON to the object's property.
+Custom serialize/deserialize behaviour can be implemented by registering a custom 'type'.
+
+The object that's configured for a type must have two methods `serialize` and `deserialize`.
+
+An example of a value that should is stored as a string but is more convenient to access as a float.
 
 ```javascript
-const shipCargoSerializer = [
-    a => a - 1,
-    b => b + 3,
-];
+import { registerCustomType, identifiedBy, identifier, field } from 'mobx-decorated-models';
+
+const cargoSerializer = {
+    serialize(cargo) {
+        return String(cargo);
+    },
+    deserialize(count) {
+        return parseFloat(count);
+    },
+};
+
+registerCustomType('cargo', cargoSerializer);
 
 @identifiedBy('boat')
 export class Ship {
     @identifier name;
 
-    @field({ serializer: shipCargoSerializer }) cargoCount;
+    @field({ type: cargoSerializer }) cargo;
 }
 
-const boat = Ship.deserialize({ id: 1, cargoCount: 3 });
-boat.cargoCount // 6
-boat.serialize().cargoCount // 5
+const boat = Ship.deserialize({ id: 1, cargo: '3.1415' });
+boat.cargo // 3.14159
+boat.serialize() // { id: 1, cargo: "3.1415" }
 ```
 
-**Note**: The above example does not deal with null/undefined or perform any validation. Real serization methods must deal with unexpected values.
+**Note**: The above example does not deal with null/undefined or perform any validation. Real type handlers should deal with unexpected values.
 
 ## unresolvedAssociations
 

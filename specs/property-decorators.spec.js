@@ -1,5 +1,5 @@
 import { autorun } from 'mobx';
-import { Box, Container, Ship, Registration } from './test-models';
+import { Box, Container, Ship, Registration, Radio } from './test-models';
 import { isSerializable } from '../lib/serializable';
 
 describe('Property Decorators', () => {
@@ -187,5 +187,14 @@ describe('Property Decorators', () => {
         expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0]).toBeInstanceOf(Box);
         expect(container.boxes[0].volume).toBe(1000);
+    });
+
+    fit('can use a custom type', () => {
+        const ship = Ship.deserialize({ radio: '156.750mhz' });
+        expect(ship.radio).toBeInstanceOf(Radio);
+        expect(ship.radio.frequency).toEqual('156.750mhz');
+        expect(ship.serialize()).toEqual(expect.objectContaining({
+            radio: '156.750mhz',
+        }));
     });
 });
