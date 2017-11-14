@@ -291,16 +291,14 @@ An example of a value that should is stored as a string but is more convenient t
 ```javascript
 import { registerCustomType, identifiedBy, identifier, field } from 'mobx-decorated-models';
 
-const cargoSerializer = {
+registerCustomType('cargo', {
     serialize(cargo) {
         return String(cargo);
     },
     deserialize(count) {
         return parseFloat(count);
     },
-};
-
-registerCustomType('cargo', cargoSerializer);
+});
 
 @identifiedBy('boat')
 export class Ship {

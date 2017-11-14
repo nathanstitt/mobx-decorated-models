@@ -25,7 +25,7 @@ export class Radio {
     }
 
 }
-registerCustomType({ id: 'radio', serializer: Radio });
+registerCustomType('radio', Radio);
 
 const shipCargoSerializer = [
     a => (a ? a - 1 : a),
