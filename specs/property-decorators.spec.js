@@ -189,7 +189,7 @@ describe('Property Decorators', () => {
         expect(container.boxes[0].volume).toBe(1000);
     });
 
-    fit('can use a custom type', () => {
+    it('can use a custom type', () => {
         const ship = Ship.deserialize({ radio: '156.750mhz' });
         expect(ship.radio).toBeInstanceOf(Radio);
         expect(ship.radio.frequency).toEqual('156.750mhz');
