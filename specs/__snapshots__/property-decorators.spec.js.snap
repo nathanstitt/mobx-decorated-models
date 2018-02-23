@@ -45,6 +45,7 @@ Object {
   },
   "cargoCount": undefined,
   "embarks": null,
+  "homePorts": Array [],
   "name": "HMS Mobx",
   "radio": null,
   "registration": "",
