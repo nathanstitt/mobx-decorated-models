@@ -53,6 +53,7 @@ export class Ship {
     @field({ serializer: shipCargoSerializer }) cargoCount;
     @field({ type: 'date' }) embarks;
     @belongsTo({ inverseOf: 'vessel' }) box;
+    @hasMany({ model: Registration }) homePorts;
 
     constructor(attrs) {
         if (this.constructor.buildSpy) { this.constructor.buildSpy(attrs); }

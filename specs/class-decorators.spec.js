@@ -1,5 +1,5 @@
 import { findModel } from '../lib/model-lookup';
-import { Container, Box, Ship } from './test-models';
+import { Container, Box, Ship, Registration } from './test-models';
 import { unresolvedAssociations } from '../lib/class-decorator';
 
 describe('Class Decorators', () => {
@@ -25,6 +25,12 @@ describe('Class Decorators', () => {
         expect(ship.embarks).toBeInstanceOf(Date);
         expect(ship.embarks).toEqual(new Date('2013-10-21T13:28:06.419Z'));
         expect(ship.serialize()).toMatchObject({ embarks: '2013-10-21T13:28:06.419Z' });
+    });
+
+    it('passes attributes to a model when deserializing a hasMany', () => {
+        const ship = Ship.deserialize({ homePorts: ['one', 'two', 'three'] });
+        expect(ship.homePorts[0]).toBeInstanceOf(Registration);
+        expect(ship.homePorts[1].id).toEqual('two');
     });
 
     it('can deserialize arrays', () => {
