@@ -33,6 +33,14 @@ describe('Class Decorators', () => {
         expect(ship.homePorts[1].id).toEqual('two');
     });
 
+    it('handles null/undefined hasMany values', () => {
+        const ship = Container.deserialize({ boxes: [{ id: 1 }, null, undefined] });
+        expect(ship.boxes).toHaveLength(3);
+        ship.boxes.forEach(b => expect(b).toBeInstanceOf(Box));
+        expect(ship.boxes[0].id).toEqual(1);
+        expect(ship.boxes[1].id).toBeUndefined();
+    });
+
     it('can deserialize arrays', () => {
         const json = [
             { id: 1, width: 8, depth: 12, height: 8 },
