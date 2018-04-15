@@ -16,11 +16,11 @@ describe('Property Decorators', () => {
             spy(box.volume);
         });
         expect(spy).toHaveBeenCalledTimes(1);
-        box.width = 3; // is already 3
+        box.width = 3;  // is already 3
         expect(spy).toHaveBeenCalledTimes(1);
         box.width = 8;
         expect(spy).toHaveBeenCalledTimes(2);
-        box.temp = 'test, test'; // non existant field
+        box.temp = 'test, test';  // non existent field
         expect(spy).toHaveBeenCalledTimes(2);
     });
 
@@ -58,8 +58,14 @@ describe('Property Decorators', () => {
     });
 
     it('finds model for belongsTo', () => {
-        const box = Box.deserialize({ id: 1, watercraft: { name: 'Boaty' } });
+        const box = new Box();
+        box.width = 100;
+        box.watercraft = { name: 'BigShip I ' };
+        box.watercraft = { name: 'BigShip II' };
         expect(box.watercraft).toBeInstanceOf(Ship);
+        const b2 = new Box();
+        b2.watercraft = { name: 'BigShip I ' };
+        expect(b2.watercraft).toBeInstanceOf(Ship);
     });
 
     it('sets an inverse for belongsTo', () => {
@@ -116,6 +122,7 @@ describe('Property Decorators', () => {
 
     it('guards against setting a belongsTo', () => {
         const ship = Ship.deserialize({ name: 'HMS Glory' });
+        ship.name = 'MHS';
         ship.box = { width: 1, height: 1, depth: 1 };
         expect(ship.box).toBeInstanceOf(Box);
         expect(ship.box.vessel).toBe(ship);
@@ -178,18 +185,23 @@ describe('Property Decorators', () => {
         expect(customBoat.serialize()).toMatchObject({ homePorts: ['home'] });
     });
 
-    it('keeps hasMany associations interceptors', () => {
+    it('retains hasMany collection instead of replacing it', () => {
         const container = Container.deserialize({ id: 1, color: 'red' });
         expect(container.boxes).toHaveLength(0);
+        container.boxes.foo = 1; // Container.deserialize({ id: 1, color: 'red' });
         container.update({ boxes: [{ width: 12, height: 12, depth: 12 }] });
+        expect(container.boxes.foo).toEqual(1);
+
         expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0]).toBeInstanceOf(Box);
         expect(container.boxes[0].color).toEqual('red');
         expect(container.boxes[0]).toBeInstanceOf(Box);
         container.boxes = [];
+        expect(container.boxes.foo).toEqual(1);
         container.boxes.push({ width: 10, height: 10, depth: 10 });
-        expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0]).toBeInstanceOf(Box);
+
+        expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0].volume).toBe(1000);
     });
 

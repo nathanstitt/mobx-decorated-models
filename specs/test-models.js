@@ -56,6 +56,7 @@ export class Ship {
     @hasMany({ model: Registration }) homePorts;
 
     constructor(attrs) {
+
         if (this.constructor.buildSpy) { this.constructor.buildSpy(attrs); }
     }
 
