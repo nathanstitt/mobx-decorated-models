@@ -1,11 +1,13 @@
 import { autorun } from 'mobx';
-import { Box, Container, Ship, Registration, Radio } from './test-models';
+import { Box, Container, Ship, Registration, Radio, Dimension } from './test-models';
 import { isSerializable } from '../lib/serializable';
 
 describe('Property Decorators', () => {
+
     it('it doesn’t interfere with inheritance', () => {
-        const container = new Container();
-        expect(container.isCuboid).toEqual(true);
+        const box = new Box({ sides: [{}], watercraft: {} });
+        expect(box.watercraft).toBeInstanceOf(Ship);
+        expect(box.sides[0]).toBeInstanceOf(Dimension);
     });
 
     it('has attributes that are observable', () => {
@@ -16,11 +18,11 @@ describe('Property Decorators', () => {
             spy(box.volume);
         });
         expect(spy).toHaveBeenCalledTimes(1);
-        box.width = 3;  // is already 3
+        box.width = 3; // is already 3
         expect(spy).toHaveBeenCalledTimes(1);
         box.width = 8;
         expect(spy).toHaveBeenCalledTimes(2);
-        box.temp = 'test, test';  // non existent field
+        box.temp = 'test, test'; // non existent field
         expect(spy).toHaveBeenCalledTimes(2);
     });
 
