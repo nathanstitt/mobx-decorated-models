@@ -22,7 +22,7 @@
     "persistence"
   ],
   "peerDependencies": {
-    "mobx": "^3.0",
+    "mobx": "^3.0 || ^4.0",
     "serializr": "^1.1"
   },
   "devDependencies": {

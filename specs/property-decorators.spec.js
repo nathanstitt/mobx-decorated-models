@@ -1,5 +1,5 @@
 import { autorun } from 'mobx';
-import { Box, Container, Ship, Registration, Radio, Dimension } from './test-models';
+import { Box, Container, Ship, Registration, Radio, Dimension, NonIdentified } from './test-models';
 import { isSerializable } from '../lib/serializable';
 
 describe('Property Decorators', () => {
@@ -217,5 +217,17 @@ describe('Property Decorators', () => {
         expect(ship.serialize()).toEqual(expect.objectContaining({
             radio: '156.750mhz',
         }));
+    });
+
+    it('can decroate models without an identifiedBy', () => {
+        const model = new NonIdentified();
+        const modifiedSpy = jest.fn();
+        autorun(() => modifiedSpy(model.name));
+        expect(modifiedSpy).toHaveBeenCalledTimes(1);
+        model.name = 'set';
+        expect(modifiedSpy).toHaveBeenCalledTimes(2);
+        model.box = { width: 12, height: 12 };
+        expect(model.box).toBeInstanceOf(Box);
+        expect(model.box.volume).toEqual(144);
     });
 });

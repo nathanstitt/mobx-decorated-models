@@ -138,3 +138,11 @@ export class Container extends RectangularCuboid {
     }
 
 }
+
+export class NonIdentified {
+
+    @identifier id;
+    @field name;
+    @belongsTo({ model: Box }) box;
+
+}
