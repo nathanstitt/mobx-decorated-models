@@ -191,10 +191,8 @@ describe('Property Decorators', () => {
         const container = new Container({ id: 1, color: 'red' });
         expect(container.boxes).toHaveLength(0);
         const originalBoxes = container.boxes;
-        container.boxes.foo = 1;
         container.boxes = [{ width: 1 }];
         expect(container.boxes).toBe(originalBoxes);
-        expect(container.boxes.foo).toEqual(1);
         container.update({ boxes: [{ width: 12, height: 12, depth: 12 }] });
         expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0]).toBeInstanceOf(Box);
@@ -202,10 +200,8 @@ describe('Property Decorators', () => {
         expect(container.boxes[0]).toBeInstanceOf(Box);
         container.boxes = [];
         expect(container.boxes).toBe(originalBoxes);
-        expect(container.boxes.foo).toEqual(1);
         container.boxes.push({ width: 10, height: 10, depth: 10 });
         expect(container.boxes[0]).toBeInstanceOf(Box);
-
         expect(container.boxes).toHaveLength(1);
         expect(container.boxes[0].volume).toBe(1000);
     });
