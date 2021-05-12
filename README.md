@@ -1,3 +1,13 @@
+# currently unmaintained!
+
+I've replaced mobx-decorated-models in my projects with [modeled-mobx](https://github.com/nathanstitt/modeled-mobx) which: 
+ * has a much simpler API
+ * supports mobx 6
+ * can be used with or without decorators.
+ * has a shorter name :-)
+
+PR's will still be welcomed and I'll gladly transfer it to anyone who's interested.
+
 # Decorators for creating model relationships with mobx
 
 mobx-decorated-models is a collection of Javascript decorators to make a classes and their relationships observable and serializable.
